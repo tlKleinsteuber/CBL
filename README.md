@@ -1,7 +1,7 @@
 # CBL
 Repository for CBL project of Tom &amp; Domantas
 
-This game is similar to & inspired by: the Oregan Trial, [_]
+This game is similar to & inspired by: the Oregan Trial, FTL, Dwarf Fortress, & Project Zomboid
 
 The premise of this game is to journey from point A to point B as quickly as possible while maintaining certain vital stats.
 
