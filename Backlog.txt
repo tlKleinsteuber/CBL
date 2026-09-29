@@ -1,0 +1,6 @@
+[] Map generator
+  [] Map display method
+  [] Map instantiation
+      -description: 2 nodes (start & end) are instantiated on an X-Y plane with predefined coordinates.
+        Further nodes are instantiated randomly ensuring no overlap & relative proximity to the 2 nodes
+        Links are established between nodes dependant on proximity. there *must* be at least one possible path from start to tend
