@@ -16,3 +16,6 @@ Time system:
 
 Inventory & encumbrance system:
   Every object has an encumbrance (generally, it's difficulty to carry) as is calculated by parameters like it's size & weight. The player character inventory is dependant on their strength & clothing (bags will increase it, for instance). A player can carry any set of items with sum less than their maximum encumbrance without reprecution. After the maximum is exceeded, they can continue to pick things up, though exhaustion will be gained at an elevated rate proportional to the excess encumbrance to some exponent.
+
+Map:
+ The map is made up of randomly generated interconnected nodes, excluding the start and end nodes, which have predetermined positions. There is always a path from start to end, however, not all nodes are part of that path, being offshoots from
