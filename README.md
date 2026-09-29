@@ -1,7 +1,9 @@
 # CBL
 Repository for CBL project of Tom &amp; Domantas
 
-This game is similar to & inspired by: the Oregan Trial, FTL, Dwarf Fortress, & Project Zomboid
+This game is similar to & inspired by: the Oregon Trial, FTL, Dwarf Fortress, & Project Zomboid;
+(random event system)	(map)	(compex structures and interactibility)	(inventory system);
+
 
 The premise of this game is to journey from point A to point B as quickly as possible while maintaining certain vital stats.
 
@@ -18,4 +20,10 @@ Inventory & encumbrance system:
   Every object has an encumbrance (generally, it's difficulty to carry) as is calculated by parameters like it's size & weight. The player character inventory is dependant on their strength & clothing (bags will increase it, for instance). A player can carry any set of items with sum less than their maximum encumbrance without reprecution. After the maximum is exceeded, they can continue to pick things up, though exhaustion will be gained at an elevated rate proportional to the excess encumbrance to some exponent.
 
 Map:
- The map is made up of randomly generated interconnected nodes, excluding the start and end nodes, which have predetermined positions. There is always a path from start to end, however, not all nodes are part of that path, being offshoots from
+ The map is made up of randomly generated interconnected nodes, excluding the start and end nodes, which have predetermined positions. There is always a path from start to end, however, not all nodes are part of that path, a. k. a. offshoots, which usually require going back and forward on the same path, however, they usually give a strategic advantage/buff. Each node represents a city.
+
+Cities:
+ Cities are randomly picked from the pool of predetermined "made-up" cities. Each city has it own randomly generated locations (shops, etc.), which can be moved between each other at no cost.
+
+Random events:
+ When travelling between nodes there is a chance for a random event (or multiple) to occur. Random events take from a pool of events, the same event may occur multiple times. Each event has a title, description and gameplay affects, such as changing stats and/or items, may even affect time.
