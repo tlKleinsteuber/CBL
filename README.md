@@ -2,7 +2,7 @@
 Repository for CBL project of Tom &amp; Domantas
 
 This game is similar to & inspired by: the Oregon Trial, FTL, Dwarf Fortress, & Project Zomboid;
-(random event system)	(map)	(compex structures and interactibility)	(inventory system);
+(random event system)	(map)	(complex structures and interactibility)	(inventory system);
 
 
 The premise of this game is to journey from point A to point B as quickly as possible while maintaining certain vital stats.
