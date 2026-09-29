@@ -15,6 +15,9 @@ Extensive inheritance for class / object system:
 
 Time system:
   The game is turn-based, but also functions on a simulated time system. Inputted actions take a certain amount of in-game time, as is calculated by various metrics applicable to the action. For example, walking from location 1 to location 2 might take 30 in-game minutes, as is calculated by distance between the two points. During this simulated time, stats are effected. Thirst, hunger, exhaustion, etc increase in relation to in-game time. The more time spent travelling between nodes also increases chance and amount of random events on the way.
+  
+Time limit:
+  At the start of the game you have set amount of time to make to the end. Through the time system you lose time, and must make it to the end before time runs out to win. The time limit is set according to the number of connections present on the main path and their total time and then put through a calculation to get the final time, which is usually enough to both make it and epxlore at least one offshoot.
 
 Inventory & encumbrance system:
   Every object has an encumbrance (generally, it's difficulty to carry) as is calculated by parameters like it's size & weight. The player character inventory is dependant on their strength & clothing (bags will increase it, for instance). A player can carry any set of items with sum less than their maximum encumbrance without reprecution. After the maximum is exceeded, they can continue to pick things up, though exhaustion will be gained at an elevated rate proportional to the excess encumbrance to some exponent.
