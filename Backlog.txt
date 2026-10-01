@@ -2,35 +2,44 @@
 
 [] player instantiation
 	[] instance variables
-		-in high priority, only very simple information. Hunger, 
+		- while in high priority, only very simple information should be contained: hunger
+	[] movement
+		- the player can move between connected nodes
 
 [] map
 	[] map instantiation
-		-should not be randomized during high priority development
-		
+		- should not be randomized during high priority development, will be predetermined
 	[] map rendering
-		- should indicate where the player is, as well as the goal location
+		- should indicate where the player is, as well as the start and end location
+
 [] rudimentary statistics
 	[] hunger
 		- increases with time. When exceeding a 100%, player is hospitalized and loses
+
 [] rudimentary random events
-	- occurs 
+	- during high priority only a few basic events that affect hunger and/or time 
+
 [] rudimentary time system
-	-each action has it's own way of calculating it's used time. 
+	- each action has it's own way of calculating its used time. 
 	[] time limit
-		-the game ends after a predetermined amount of time. If the player makes it to point B, they win. 
+		- the game ends after a predetermined amount of time. If the player makes it to the end node, they win. 
+
 [] rudimentary cities
-	-when a player is in a city, they are provided with locations to enter (in high priority dev, travel time & relative location are NOT accounted for)
+	- when a player is in a city, they are provided with locations to enter (in high priority dev., travel time & relative location are NOT accounted for)
 	[] rudimentary shop 
-		-at this point, allows the purchase of only food, which should be automatically eaten to lower hunger
+		- at this point, allows the purchase of only food, which should be automatically eaten to lower hunger
 
 
 
 
 # Medium priority
+
 [] extended map tools
 	[] randomly generated map
-	[]
+		- the map, excluding start and end nodes, is randomized, a random amount (from a set interval) of nodes is placed on the map
+	[] random city names
+		- each city has a random name from a set list, is visible on map
+
 [] extended statistics
 	[] updated hunger
 		- onsets effects at varying levels instead of nothing / hospitalized (lol)
@@ -40,10 +49,29 @@
 	[] exhaustion
 		- is gained after too much time without sleep. slows all actions (thus also increasing random encounter per action)
 	[] physical strain
-		- is gained after too much physical activity without rest. 
+		- is gained after too much physical activity without rest
 	[] joy
-		-is lowered by other negative traits (hunger, exhaustion, etc). more of an overall indicator of wellbeing than anything else
-[] extended random events
-[] extended player character instantiation
-	[] 
+		- is lowered by other negative traits (hunger, exhaustion, etc). more of an overall indicator of wellbeing than anything else
 
+[] extended random events
+	- more events, they contain names and descriptions
+
+[] extended shop
+	- allows for purchase of items to help manage stats
+
+[] extended player character instantiation
+	[] ?
+
+# Low priority
+
+[] graphics
+	- game has simple graphics
+
+[] extended statistics
+	[] fame
+		- is gained from random events, is useless (just like wisdom in ff1)
+	[] cringe
+		- gained by specific circumstances, causes "died by cringe" event if >0
+
+[] saving
+	- the game can be saved/autosaves, allows closing program without losing progress
