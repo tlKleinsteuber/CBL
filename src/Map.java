@@ -1,6 +1,15 @@
 import java.awt.Point;
 
 public class Map {
+
+    //create matrix of connections
+    //if a cell is 0, the intersecting nodes are NOT connected
+    //else the number is positive and represents the weight of each connection
+    
+    //are nodes objects? if so, should start and end nodes inherit them?
+
+    //for now ignore the current code, should formulate plan and template
+    
     StartNode start;
     EndNode end;
     int nodes;
