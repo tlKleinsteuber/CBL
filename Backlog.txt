@@ -40,7 +40,7 @@
 	[] random city names
 		- each city has a random name from a set list, is visible on map
 	[] visuals
-		- map is represented visually using Swing
+		- map is represented visually
 
 [] extended statistics
 	[] updated hunger
