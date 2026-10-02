@@ -1,38 +1,46 @@
 import java.awt.Point;
 
 public class Map {
-
-    //create matrix of connections
-    //if a cell is 0, the intersecting nodes are NOT connected
-    //else the number is positive and represents the weight of each connection
-    
-    //are nodes objects? if so, should start and end nodes inherit them?
-
-    //for now ignore the current code, should formulate plan and template
-    
-    StartNode start;
-    EndNode end;
-    int nodes;
+    int numNodes;
     int connections;
+    
+    Node[] nodes;
     
     //array of connections containing node pairs
     
-    class StartNode {
-        Point startNode;
+    public Map() {
+        this.numNodes = 10;
+        this.nodes = new Node[numNodes];
+        for (int i = 1; i < numNodes - 1; i++) {
+            this.nodes[i] = new Node();
+        }
+        SetStartEnd(numNodes);
+    }
+    
+    public class Node {
+        Point node = new Point();
+        public Node() {
+            this.node.setLocation(1, 1);
+        }
+        public Point returnPos() {
+            return this.node;
+        }
+    }
+    
+    public class StartNode extends Node {
         StartNode() {
-            startNode.setLocation(0, 0);
+            this.node.setLocation(0, 0);
         }
     }
     
-    class EndNode {
-        Point endNode;
+    public class EndNode extends Node{
         EndNode() {
-            endNode.setLocation(50, 50);
+            this.node.setLocation(50, 50);
         }
     }
     
-    void SetStartEnd() {
-        this.start = new StartNode();
-        this.end = new EndNode();
+    void SetStartEnd(int numNodes) {
+        this.nodes[0] = new StartNode();
+        this.nodes[numNodes - 1] = new EndNode();
     }
 }
