@@ -60,7 +60,7 @@
 	- allows for purchase of items to help manage stats
 
 [] extended player character instantiation
-	[] ?
+	[] player is instantiated with expanded stats
 
 # Low priority
 
