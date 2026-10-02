@@ -10,7 +10,7 @@
 	[] map instantiation
 		- should not be randomized during high priority development, will be predetermined
 	[] map rendering
-		- should indicate where the player is, as well as the start and end location
+		- should indicate where the player is, as well as the start and end location, but only in text, not visually
 
 [] rudimentary statistics
 	[] hunger
@@ -39,6 +39,8 @@
 		- the map, excluding start and end nodes, is randomized, a random amount (from a set interval) of nodes is placed on the map
 	[] random city names
 		- each city has a random name from a set list, is visible on map
+	[] visuals
+		- map is represented visually using Swing
 
 [] extended statistics
 	[] updated hunger
