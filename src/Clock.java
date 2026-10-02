@@ -37,7 +37,23 @@ public class Clock {
             
             
         }
-            
+
+        
+
+        //TODO IN CLOCK!!!!
+
+            //implement randomevents as a subclass! this way it will be VERY easy to have the passTime method interact with it
+            //the above game loss implementation. lmao
+
+
+
+
+
+
+
+
+
+        
     }
     
 }
