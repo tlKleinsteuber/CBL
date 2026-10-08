@@ -1,15 +1,20 @@
 # HIGH PRIORITY
 
-[] player instantiation
-	[] instance variables
+[X] Git version control (self evident)
+[X] Complex data structures (map)
+
+
+
+[X] player instantiation
+	[X] instance variables
 		- while in high priority, only very simple information should be contained: hunger
-	[] movement
+	[X] movement
 		- the player can move between connected nodes
 
-[] map
-	[] map instantiation
+[X] map
+	[X] map instantiation
 		- should not be randomized during high priority development, will be predetermined
-	[] map rendering
+	[X] map rendering
 		- should indicate where the player is, as well as the start and end location, but only in text, not visually
 
 [] rudimentary statistics
@@ -19,9 +24,9 @@
 [] rudimentary random events
 	- during high priority only a few basic events that affect hunger and/or time 
 
-[] rudimentary time system
+[X] rudimentary time system
 	- each action has it's own way of calculating its used time. 
-	[] time limit
+	[X] time limit
 		- the game ends after a predetermined amount of time. If the player makes it to the end node, they win. 
 
 [] rudimentary cities
@@ -34,12 +39,12 @@
 
 # Medium priority
 
-[] extended map tools
-	[] randomly generated map
+[X] extended map tools
+	[X] randomly generated map
 		- the map, excluding start and end nodes, is randomized, a random amount (from a set interval) of nodes is placed on the map
-	[] random city names
+	[X] random city names
 		- each city has a random name from a set list, is visible on map
-	[] visuals
+	[X] visuals
 		- map is represented visually
 
 [] extended statistics
