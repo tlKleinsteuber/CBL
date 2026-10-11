@@ -1,20 +1,10 @@
 //import java.awt.Point;
 
-public class Player {
-    //current stats, listed as intergers:
-    
+public class Player {    
     int startID;
-    //hunger - NOT saturation, higher value means more hungry
     int hunger;
-    //max hunger - set the maximum amount of hunger the player may have before death
     int maxHunger;
-    
-    //maximum distance cities can be to be reached
-    //default is 20
-    int maxReach;
-    
-    //position - the players current position, is a point
-    //forgot to include in backlog!
+    int fame;
     Map.City position;
     
     //constructor, sets initial stats and position
@@ -23,32 +13,41 @@ public class Player {
         //for now stats are set manually within code
         this.hunger = 0;
         this.maxHunger = 10;
-        this.maxReach = 20;   
-        this.startID = 3;
         //can choose id of starting city
         //NOT startCity
+        this.startID = 3;
         this.position = map.SetStartCity(startID);
         this.position.displayName = "O";
+        this.fame = 0;
     }
     
     public void getAdjescentCities(Map map) {
-        System.out.println("Cities adjescent to city " + this.position.cityName);
+        System.out.println();
+        System.out.println("Cities adjescent to city " + this.position.cityName + ":");
         for (int i = 0; i < map.NUMOFCITIES; i++) {
             //for now uses connections boolean matrix
-            //may use distances matrix and compare with maxReach (default is 20, items may increase)
-            
-            //if have teleport
-            /*
-            if (map.distances[i][position.cityID] < maxReach) {
-                
-            }
-            */
-            
-            //if no teleport
             if (map.connections[i][position.cityID]) {
                 System.out.println("City " + map.cities[i].cityName + ", distance to: " + map.distances[i][position.cityID]);
             }
         }
+        System.out.println();
+    }
+    
+    //changes stats when moving
+    public void MovementStatChanges(int distance) {
+        //hunger is incremented based on distance and quality
+        HungerChange(-1 * (distance / 10));
+    }
+    
+    public void HungerChange(int change) {
+        this.hunger -= change;
+        if (this.hunger < 0) {
+            this.hunger = 0;
+        }
+    }
+    
+    public void FameChange() {
+        this.fame += (int) (Math.random() * 5);
     }
     
     public boolean isConnected (Map map, String name) {
@@ -69,11 +68,14 @@ public class Player {
         this.position = map.cities[map.getIdByName(target)];
     }
     
-    public void returnStats() {
+    public void returnStats(Clock clock) {
         System.out.println("Stats: ");
         System.out.println("Hunger: " + this.hunger);
-        System.out.println("Max hunger: " + this.maxHunger);
-        System.out.println("Max reach: " + this.maxReach);
+        if (this.fame > 0) {
+            System.out.println("Fame: " + this.fame);
+        }
+        System.out.println("Time left: " + clock.TimeRemaining / (24 * 60) + " day(s) " + (clock.TimeRemaining % (24 * 60)) / 60 + " h " + clock.TimeRemaining % 60 + " min.");
+        //System.out.println("Max hunger: " + this.maxHunger);
         System.out.println("City name and coords: " + this.position.cityName + " (" + this.position.coords.getX() + ", " + this.position.coords.getY() + ")");
     }
 }

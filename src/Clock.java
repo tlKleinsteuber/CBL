@@ -2,6 +2,26 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 public class Clock {
+    //base time is measured in minutes
+    int timeLimit;
+    int TimeRemaining;
+    
+    public Clock() {
+        this.timeLimit = 2880;
+        this.TimeRemaining = timeLimit;
+    }
+    
+    void TimePass(int distance) {
+        this.TimeRemaining -= distance;
+    }
+    
+    /*
+    *
+    *   Making my own clock for management
+    *
+    */
+    
+    /*
     LocalDate STARTDATE = LocalDate.of(2026, 6, 30);
     LocalDate currentDate = STARTDATE;
     LocalDate endDate;
@@ -39,5 +59,6 @@ public class Clock {
         }
             
     }
+    */
     
 }

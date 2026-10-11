@@ -12,10 +12,16 @@ public class Map {
     String[] cityNames = new String[allNames.length];
 
     public int NUMOFCITIES = 18;
+    int NESCECARYCITIES  = 10;
     public City[] cities = new City[NUMOFCITIES];
     int distanceBuffer;
     
-    //make into ArrayList
+    int chanceForPath;
+    double MINBRANCHCITYDISTANCE = 30.0;
+    int PATHCHANCECONSTANT = 150;
+    boolean validCity = false;
+    
+    //make into Object
     public boolean[][] connections = new boolean[NUMOFCITIES][NUMOFCITIES];
     public int[][] distances = new int[NUMOFCITIES][NUMOFCITIES];
     
@@ -52,19 +58,18 @@ public class Map {
     
     void randomizeNames() {
         Collections.shuffle(shuffleNames);
-        String temp;
         for (int i = 0; i < allNames.length; i++) {
             cityNames[i] = shuffleNames.get(i);
         }
     }
     
     public Map() {
+        //randomizes the list of names
         randomizeNames();
         
-        //populates the cities array with new city objects. (i should be considered the seed of the city).
+        //populates the cities array with new city objects
         for (int i = 0; i < NUMOFCITIES; i++) {
             cities[i] = new City(i);
-            //System.out.println("City " + cities[i].cityName + " instantiated at coordinates: " + cities[i].coords);
         }
         
         for (int i = 0; i < NUMOFCITIES; i++) {
@@ -72,9 +77,8 @@ public class Map {
                 pathMatrix[i][j] = "";
                 distanceBuffer = (int)Math.sqrt(Math.pow(Math.abs(cities[i].coords.x - cities[j].coords.x), 2) + Math.pow(Math.abs(cities[i].coords.y - cities[j].coords.y), 2));
                 distances[i][j] = distanceBuffer;
-                if (distanceBuffer != 0 && distanceBuffer <= 20) {
+                if (distanceBuffer != 0 && distanceBuffer <= 40) {
                     pathMatrix[i][j] += Integer.toString(distanceBuffer)  + ",";
-                    //System.out.println("distance from city " + i + " to " + j + ": " + pathMatrix[i][j]);
                     connections[i][j] = true;
                 } else {
                     connections[i][j] = false;
@@ -88,7 +92,6 @@ public class Map {
         return cities[i];
     }    
     
-    //should ensure no duplicates allowed!
     public int getIdByName (String name) {
         for (int i = 0; i < NUMOFCITIES; i++) {
             if (cities[i].cityName.equals(name)) {
@@ -104,12 +107,7 @@ public class Map {
         String displayName;
         Point coords;
         public int cityID;
-        
         boolean hasPlayer;
-        
-        public void setPlayer(int i) {
-            //cities[i].hasPlayer = ture
-        }
         
         public City(int cityNum) {
             //paramater cityNum helps handle city individuality (future proofing, mostly).
