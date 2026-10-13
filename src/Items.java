@@ -7,6 +7,7 @@ public class Items {
         int id;
         String name;
         String description;
+        String flavour;
     }
     
     public class Food extends Item{
@@ -15,6 +16,7 @@ public class Items {
             id = 0;
             name = "Food";
             description = "Restores 5 hunger.";
+            flavour = "It's just that - food.";
         }
     }
     
@@ -23,7 +25,10 @@ public class Items {
             price = 10;
             id = 1;
             name = "Watch";
-            description = "Increases time left by 15 minutes.";
+            description = "Increases time left by 60 minutes.";
+            flavour = """
+                      Do not mind the logistics of time manipulation, 
+                      for all will become clear in the future... or past? """;
         }
     }
     
@@ -33,6 +38,7 @@ public class Items {
             id = 2;
             name = "Teleporter";
             description = "Allows to go to any city within range";
+            flavour = "It always works!";
         }
     }
 }

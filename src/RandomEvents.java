@@ -3,15 +3,15 @@ public class RandomEvents {
         
     }
     //roll a rnd number to determine if and what type of event happens
-    int rollEvent(int distance) {
-        int chancemaker = (int) ((Math.random() * 100) + distance);
-        if(chancemaker < 50) {
+    int rollEvent(int timeChange) {
+        int chancemaker = (int) ((Math.random() * 50));
+        if(chancemaker < 70) {
             return 0;
-        } else if (chancemaker < 60) {
+        } else if (chancemaker < 80) {
             return 1;
-        } else if (chancemaker < 75) {
+        } else if (chancemaker < 95) {
             return 2;
-        } else if (chancemaker < 90) {
+        } else if (chancemaker < 100) {
             return 3;
         } else {
             return 4;

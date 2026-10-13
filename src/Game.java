@@ -44,12 +44,14 @@ public class Game {
                 case "move" -> {
                     //if player has increased reach, may travel to unconnected cities (teleport)
                     String targetName = input.next();
-                    travelDistance = map.distances[map.getIdByName(targetName)][player.position.cityID];
+                    //travelDistance = map.distances[map.getIdByName(targetName)][player.position.cityID];
+                    travelDistance = map.pathMatrix[map.getIdByName(targetName)][player.position.cityID].distance;
                     if(player.isConnected(map, targetName)) {
                         //changes time, stats and roll for random event based on distance
-                        clock.TimePass(travelDistance);
-                        player.MovementStatChanges(travelDistance);
-                        rndEvent.DoEvent(player, clock, rndEvent.rollEvent(travelDistance));
+                        int timeChange = clock.TimeChange(travelDistance, map.pathMatrix[map.getIdByName(targetName)][player.position.cityID].quality);
+                        clock.TimePass(timeChange);
+                        player.MovementStatChanges(timeChange);
+                        rndEvent.DoEvent(player, clock, rndEvent.rollEvent(timeChange));
                         
                         //checks if after everything the player is still alive
                         if (CheckIfDead(player, clock)) {
@@ -69,7 +71,7 @@ public class Game {
                 case "list" -> {
                     //prints out all cities and whether they contain the player
                     //for troubleshooting
-                    for (int i = 0; i < map.NUMOFCITIES; i++) {
+                    for (int i = 0; i < map.TOTALCITIES; i++) {
                         System.out.println(map.cities[i].cityName + " " + map.cities[i].hasPlayer);
                     }
                 }
@@ -102,3 +104,12 @@ public class Game {
         */
     }
 }   
+
+/*
+Buildings - seperate class or object in map/city?
+shop - subobject of building or extension?
+shop inventory - extension of container/ array list of container?
+Container - class with item id int?
+inventory - container extension in player or an array list of container?
+items stored by id
+*/

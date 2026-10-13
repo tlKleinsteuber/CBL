@@ -15,6 +15,11 @@ public class Clock {
         this.TimeRemaining -= distance;
     }
     
+    int TimeChange(int distance, int quality) {
+        //will calculate with path quality
+        return distance + 5 - (quality / 51);
+    }
+    
     /*
     *
     *   Making my own clock for management

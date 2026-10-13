@@ -12,31 +12,31 @@ public class Player {
     public Player(Map map) {
         //for now stats are set manually within code
         this.hunger = 0;
-        this.maxHunger = 10;
+        this.maxHunger = 20;
         //can choose id of starting city
         //NOT startCity
-        this.startID = 3;
+        this.startID = 0;
         this.position = map.SetStartCity(startID);
-        this.position.displayName = "O";
         this.fame = 0;
     }
     
     public void getAdjescentCities(Map map) {
         System.out.println();
         System.out.println("Cities adjescent to city " + this.position.cityName + ":");
-        for (int i = 0; i < map.NUMOFCITIES; i++) {
+        for (int i = 0; i < map.TOTALCITIES; i++) {
             //for now uses connections boolean matrix
-            if (map.connections[i][position.cityID]) {
-                System.out.println("City " + map.cities[i].cityName + ", distance to: " + map.distances[i][position.cityID]);
+            if (map.pathMatrix[i][position.cityID].isPath) {
+                System.out.println("City " + map.cities[i].cityName + ", distance to: " + map.pathMatrix[i][position.cityID].distance + 
+                        ", path quality: " + map.pathMatrix[i][position.cityID].quality + " " + (5 - (map.pathMatrix[i][position.cityID].quality / 51)));
             }
         }
         System.out.println();
     }
     
     //changes stats when moving
-    public void MovementStatChanges(int distance) {
+    public void MovementStatChanges(int timeChange) {
         //hunger is incremented based on distance and quality
-        HungerChange(-1 * (distance / 10));
+        HungerChange(-1 * (timeChange / 10));
     }
     
     public void HungerChange(int change) {
@@ -51,8 +51,10 @@ public class Player {
     }
     
     public boolean isConnected (Map map, String name) {
-        if (map.getIdByName(name) >= 0 && map.connections[map.getIdByName(name)][position.cityID]) {
-            return true;
+        if (map.getIdByName(name) >= 0) {
+            if (map.pathMatrix[map.getIdByName(name)][position.cityID].isPath) {
+                return true;
+            }
         }
         return false;
     }
@@ -60,11 +62,9 @@ public class Player {
     public void MoveTo (Map map, String target) {
         //removes from current city
         this.position.hasPlayer = false;
-        this.position.displayName = this.position.cityName;
         
         //adds to new city
         map.cities[map.getIdByName(target)].hasPlayer = true;
-        map.cities[map.getIdByName(target)].displayName = "O";
         this.position = map.cities[map.getIdByName(target)];
     }
     

@@ -9,32 +9,21 @@ public class Map {
     //when instantiating map, should use collections shuffle to randomly sort list of possible names
     String[] allNames = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",  "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
     List<String> shuffleNames = new ArrayList<>(Arrays.asList(allNames));
-    String[] cityNames = new String[allNames.length];
+    String[] CITYNAMES = new String[allNames.length];
 
-    public int NUMOFCITIES = 18;
-    int NESCECARYCITIES  = 10;
-    public City[] cities = new City[NUMOFCITIES];
-    int distanceBuffer;
-    
-    int chanceForPath;
-    double MINBRANCHCITYDISTANCE = 30.0;
-    int PATHCHANCECONSTANT = 150;
-    boolean validCity = false;
+    public int PATHCHANCECONSTANT = 150;
+    public double MINSECONDARYCITYDISTANCE = 30.0;
+    public int TOTALCITIES = 23;
+    public int PRIMARYCITIES = 10;
+    public int chanceForPath;
+    public City[] cities = new City[TOTALCITIES];
+    public Edge[][] pathMatrix = new Edge[TOTALCITIES][TOTALCITIES];
+    int totalPaths = 0;
+    int totalEdges = 0;
     
     //make into Object
-    public boolean[][] connections = new boolean[NUMOFCITIES][NUMOFCITIES];
-    public int[][] distances = new int[NUMOFCITIES][NUMOFCITIES];
-    
-    //make matrix of object Mapping
-    //it tracks whether cities are connected (boolean)
-    //distance between nodes (int)
-    //connection types (String / int (id))
-    
-    //pathMatrix contains strings that should be in a certain format, to be parsed for information regarding the links between 2 cities.
-    //for example, pathMatrix[5][3] = "distance[42],special[none],condition[low]"; would indicate that the path between cities 5 and 3 has a distance of 42, no special attributes 
-    //(attribute elaboration below), and is a low-condition road (I.E. more minutes to travel / higher chance of negative random events).
-    public String[][] pathMatrix = new String[NUMOFCITIES][NUMOFCITIES];
-    
+    //public boolean[][] connections = new boolean[TOTALCITIES][TOTALCITIES];
+    //public int[][] distances = new int[TOTALCITIES][TOTALCITIES];    
     
     /*
     
@@ -59,41 +48,44 @@ public class Map {
     void randomizeNames() {
         Collections.shuffle(shuffleNames);
         for (int i = 0; i < allNames.length; i++) {
-            cityNames[i] = shuffleNames.get(i);
+            CITYNAMES[i] = shuffleNames.get(i);
         }
     }
     
     public Map() {
-        //randomizes the list of names
+        
         randomizeNames();
         
-        //populates the cities array with new city objects
-        for (int i = 0; i < NUMOFCITIES; i++) {
+        for (int i = 0; i < TOTALCITIES; i++) {
             cities[i] = new City(i);
         }
         
-        for (int i = 0; i < NUMOFCITIES; i++) {
-            for (int j = 0; j < NUMOFCITIES; j++) {
-                pathMatrix[i][j] = "";
-                distanceBuffer = (int)Math.sqrt(Math.pow(Math.abs(cities[i].coords.x - cities[j].coords.x), 2) + Math.pow(Math.abs(cities[i].coords.y - cities[j].coords.y), 2));
-                distances[i][j] = distanceBuffer;
-                if (distanceBuffer != 0 && distanceBuffer <= 40) {
-                    pathMatrix[i][j] += Integer.toString(distanceBuffer)  + ",";
-                    connections[i][j] = true;
-                } else {
-                    connections[i][j] = false;
+        for (int i = 0; i < TOTALCITIES; i++) {
+            for (int j = 0; j < TOTALCITIES; j++) {
+                pathMatrix[i][j] = new Edge(cities[i], cities[j]);
+                totalEdges++;
+                if (pathMatrix[i][j].isPath) {
+                    totalPaths++;
+                    pathMatrix[j][i] = pathMatrix[i][j];
+                } else if (pathMatrix[j][i].isPath) {
+                    pathMatrix[i][j] = pathMatrix[j][j];
                 }
             }
         }
+        
+        //System.out.println("total paths: " + totalPaths);
+        //System.out.println("total edges: " + totalEdges);
+        
+        
     }
     
     public City SetStartCity(int i) {
         cities[i].hasPlayer = true;
         return cities[i];
-    }    
+    }
     
     public int getIdByName (String name) {
-        for (int i = 0; i < NUMOFCITIES; i++) {
+        for (int i = 0; i < TOTALCITIES; i++) {
             if (cities[i].cityName.equals(name)) {
                 return i;
             }
@@ -101,7 +93,7 @@ public class Map {
         return -1;
     }
     
-     public class City {
+    /*public class City {
         //declare appropriate city information
         String cityName;
         String displayName;
@@ -109,7 +101,7 @@ public class Map {
         public int cityID;
         boolean hasPlayer;
         
-        public City(int cityNum) {
+        /*public City(int cityNum) {
             //paramater cityNum helps handle city individuality (future proofing, mostly).
             //therefore there should exist an integer counter where cities are instantiated to identify and individualize cities.
             //assign appropriate city information. Further in development, make this generation dependant on a random (or preset) seed.
@@ -137,6 +129,91 @@ public class Map {
                 }
             }
             
+        }
+    }*/
+        
+    public class City {
+        
+        public String cityName;
+        public Point coords;
+        public boolean isValidSecondaryCity;
+        public int cityID;
+        public boolean hasPlayer;
+        
+        public City(int cityNum) {
+            cityID = cityNum;
+            cityName = CITYNAMES[cityNum];
+            if (cityNum < PRIMARYCITIES) {
+                //city instantiation for primary cities
+                if (cityNum == 0) {
+                    cityName = "start";
+                    coords = new Point(0, 0);
+                } else if (cityNum == PRIMARYCITIES - 1) {
+                    cityName = "Eindhoven";
+                    coords = new Point(350, 350);
+                } else {
+                    //(FORMULA) Formula for coordinates of Primary non-start/end cities:
+                    coords = new Point((int)(Math.random()* 20 - 10) + 40 * (cityNum), (int)(Math.random()*20 - 10) + 40 * (cityNum));
+                }
+                for (int i = 0; i < cityNum; i++) {
+                    //instantiates a new edge between all previously instantiated cities & this one. Sets the distance too.
+                    pathMatrix[i][cityNum] = new Edge(cities[i], this);
+                    pathMatrix[i][cityNum].distance = (int)Math.sqrt(Math.pow(Math.abs(coords.x - cities[i].coords.x), 2) + Math.pow(Math.abs(coords.y - cities[i].coords.y), 2));
+                    pathMatrix[cityNum][i] = pathMatrix[i][cityNum];
+                }
+                
+            } else {
+                //city instantiation for secondary cities
+                do {
+                    //essentially resets the city's edges. This is useful for iterative generation, in case a city does not meet criteria. then, rerolls coords & tests criteria again
+                    for (int i = 0; i < cityNum; i++) {
+                        pathMatrix[i][cityNum] = null;
+                        pathMatrix[cityNum][i] = null;
+                    }
+                    
+                    isValidSecondaryCity = true;
+                    coords = new Point(coords = new Point((int)(Math.random() * 460),(int)(Math.random()* 460)));
+                    
+                    for (int i = 0; i < cityNum; i++) {
+                        pathMatrix[i][cityNum] = new Edge(cities[i], this);
+                        // (FORMULA) criteria for failed cities. Regenerates if these are satisfied.
+                        if (pathMatrix[i][cityNum].distance < 100) {
+                            isValidSecondaryCity = false;
+                        } 
+                        pathMatrix[cityNum][i] = pathMatrix[i][cityNum];
+                    }
+                } while (!isValidSecondaryCity);
+            }
+        }
+    }
+    
+    public class Edge {
+        int distance;
+        boolean isPath;
+        int quality;
+        
+        public Edge(City a, City b) {
+            isPath = false;
+            distance = (int)Math.sqrt(Math.pow(Math.abs(a.coords.x - b.coords.x), 2) + Math.pow(Math.abs(a.coords.y - b.coords.y), 2));
+            //Primary - primary path generation
+            if (a.cityID < PRIMARYCITIES && b.cityID < PRIMARYCITIES) {
+                if (a.cityID == b.cityID + 1 || a.cityID == b.cityID - 1) {
+                    isPath = true;
+                }
+            } else {
+                //secondary <-> primary OR secondary <-> secondary path generation
+                if (this.distance != 0) {
+                    //(FORMULA) formula for path formation chance:
+                    chanceForPath = (int) (PATHCHANCECONSTANT / this.distance) * 100;
+                }
+                if (Math.random() * 100 < chanceForPath) {
+                    this.isPath = true;
+                } else {
+                }
+            }
+            if (isPath){
+                quality = (int)(Math.random()*256);
+            }
         }
     }
 }
