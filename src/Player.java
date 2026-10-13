@@ -12,7 +12,7 @@ public class Player {
     public Player(Map map) {
         //for now stats are set manually within code
         this.hunger = 0;
-        this.maxHunger = 20;
+        this.maxHunger = 200000;
         //can choose id of starting city
         //NOT startCity
         this.startID = 0;

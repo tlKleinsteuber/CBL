@@ -49,10 +49,10 @@ public class Renderer extends javax.swing.JFrame {
      */
     
     
-    public Renderer() {
+    public Renderer(Map map) {
         
         initComponents();
-        world = new Map();
+        world = map;
         pathQualityHelper = new Color[world.TOTALCITIES][world.TOTALCITIES];
         mapRender();
         
@@ -276,7 +276,7 @@ public class Renderer extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Renderer().setVisible(true));
+        //java.awt.EventQueue.invokeLater(() -> new Renderer().setVisible(true));
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

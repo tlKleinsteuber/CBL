@@ -50,7 +50,9 @@ public class RandomEvents {
                             "Adult Jazz", 
                             "Theodore John Kaczynski", 
                             "Your maker", 
-                            "Me"};
+                            "Me", 
+                            "Fredderick Fazbear", 
+                            "Waga"};
     
     void MetCelebrity(Player player) {
         player.FameChange();

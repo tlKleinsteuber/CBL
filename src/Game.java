@@ -6,6 +6,7 @@
 
 import java.awt.Point;
 import java.util.Scanner;
+import javax.swing.*;
 
 public class Game {
     
@@ -23,6 +24,8 @@ public class Game {
         Player player = new Player(map);
         RandomEvents rndEvent = new RandomEvents();
         Clock clock = new Clock();
+        Renderer r = new Renderer(map);
+        SwingUtilities.invokeLater(() -> r.setVisible(true));
         
         /*
         *
@@ -102,6 +105,7 @@ public class Game {
         *   END OF LOOP
         *
         */
+        //r.setVisible(false);
     }
 }   
 
