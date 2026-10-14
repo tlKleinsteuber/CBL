@@ -1,23 +1,55 @@
+import java.util.*;
+
 //import java.awt.Point;
 
 public class Player {    
-    int startID;
+    //Stats:
+    
+    //survival
     int hunger;
     int maxHunger;
+    
+    //money
+    int money;
+    
+    //inventory
+    //is not sorted in any way, each item takes up one space, is not grouped (for example 2 food would be 2 lines of food, not food x2)
+    public class Inventory extends Container {
+        Inventory() {
+            size = 0;
+            maxSize = 10;
+            items = new ArrayList<Items.Item>();
+        }
+    }
+    Inventory inventory;
+    
+    //wisdom
     int fame;
+    
+    //position
+    int startID;
     Map.City position;
     
     //constructor, sets initial stats and position
-    //position is currently a Point variable
     public Player(Map map) {
-        //for now stats are set manually within code
+        //survival
         this.hunger = 0;
-        this.maxHunger = 200000;
+        this.maxHunger = 100;
+        
+        //money
+        this.money = 0;
+        
+        //inventory
+        this.inventory = new Inventory();
+        
+        //wisdom
+        this.fame = 0;
+        
+        //position
         //can choose id of starting city
         //NOT startCity
         this.startID = 0;
         this.position = map.SetStartCity(startID);
-        this.fame = 0;
     }
     
     public void getAdjescentCities(Map map) {
@@ -43,6 +75,13 @@ public class Player {
         this.hunger -= change;
         if (this.hunger < 0) {
             this.hunger = 0;
+        }
+    }
+    
+    public void MoneyChange(int change) {
+        this.money += change;
+        if (this.money < 0) {
+            this.money = 0;
         }
     }
     

@@ -1,17 +1,57 @@
+import java.util.*;
+
 public class Items {
+    
+    /*
+    
+    Simply a colection of items in code
+    
+    */
     
     //should id's be set manually?
     
+    //map of items and ids
+    //IF MAP WOULD EVEN WORK (1:33 AM)
+    
+    //set of items, methods check for mathing id
+    HashSet<Item> items = new HashSet<>();
+
+    public Items() {
+        //Creates item object of each type
+        Item food = new Food();
+        Item watch = new Watch();
+        Item teleporter = new Teleporter();
+        
+        //adds all items to the item set
+        items.add(food);
+        items.add(watch);
+        items.add(teleporter);
+    }
+        
+    //superclass for all items
     public class Item {
         int price;
         int id;
         String name;
         String description;
         String flavour;
+        
+        public int returnID() {
+            return id;
+        }
+        
+        public Item returnSelf() {
+            return this;
+        }
+        /*
+        public String returnName() {
+            return name;
+        }
+*/
     }
     
     public class Food extends Item{
-        public void Food() {
+        public Food() {
             price = 4;
             id = 0;
             name = "Food";
@@ -21,7 +61,7 @@ public class Items {
     }
     
     public class Watch extends Item {
-        public void Watch() {
+        public Watch() {
             price = 10;
             id = 1;
             name = "Watch";
@@ -33,7 +73,7 @@ public class Items {
     }
     
     public class Teleporter extends Item {
-        public void Teleporter() {
+        public Teleporter() {
             price = 50;
             id = 2;
             name = "Teleporter";

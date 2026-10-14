@@ -4,17 +4,14 @@
 // Should render output with Swing (possibly do this in a seperate renderer object)
 
 
-import java.awt.Point;
-import java.util.Scanner;
+//import java.awt.Point;
+import java.util.*;
 import javax.swing.*;
 
 public class Game {
     
     static boolean CheckIfDead(Player player, Clock clock) {
-        if (player.hunger > player.maxHunger || clock.TimeRemaining < 0) {
-            return true;
-        }
-        return false;
+        return player.hunger > player.maxHunger || clock.TimeRemaining < 0;
     }
     
     public static void main(String[] args) {
@@ -25,7 +22,11 @@ public class Game {
         RandomEvents rndEvent = new RandomEvents();
         Clock clock = new Clock();
         Renderer r = new Renderer(map);
-        SwingUtilities.invokeLater(() -> r.setVisible(true));
+        SwingUtilities.invokeLater(() -> r.setVisible(true));        
+        
+        Items items = new Items();
+        //maybe will use
+        //Iterator<Items.Item> itemIterator = items.items.iterator();
         
         /*
         *
@@ -83,6 +84,44 @@ public class Game {
                     System.out.println("Closing the system.");
                     isRunning = false;
                 }
+                case "item" -> {
+                    //test for geting specific item
+                    for (Items.Item i : items.items) {
+                        if(i.returnID() == 0) {
+                            //use this loop to get items by id
+                            //System.out.println(i.returnSelf().description);
+                        }
+                    }
+                    //System.out.println(items.items.);
+                }
+                case "inventory" -> {
+                    //return all items in inventory
+                    //returns only name, can set to return other things
+                    System.out.println("You have " + player.inventory.returnSize() + " items:");
+                    for (int i = 0; i < player.inventory.returnSize(); i++) {
+                        System.out.println(player.inventory.items.get(i).name);
+                    }
+                    //System.out.println(items.items.);
+                }
+                case "add" -> {
+                    String itemName = input.next();
+                    for (Items.Item i : items.items) {
+                        if(i.name.equals(itemName)) {
+                            player.inventory.addItem(i);
+                            System.out.println("Added " + i.name + " to inventory");
+                        }
+                    }
+                }
+                case "remove" -> {
+                    String itemName = input.next();
+                    for (Items.Item i : items.items) {
+                        //use exact names, with capital letters;
+                        if(i.name.equals(itemName)) {
+                            player.inventory.removeItem(i);
+                            System.out.println("Removed " + i.name + " from inventory");
+                        }
+                    }
+                }
                 default -> {
                     System.out.println("?");
                 }
@@ -116,4 +155,31 @@ shop inventory - extension of container/ array list of container?
 Container - class with item id int?
 inventory - container extension in player or an array list of container?
 items stored by id
+*/
+
+/*
+1)
+[X]    Items
+[X]     Set of all items for use
+
+2)
+[X]    Container - seperate class
+[X]      int size, arraylist items
+[X]    Container methods
+[?]        add/remove item, get item by name/id
+
+3)
+[X]    Inventory - extension of Container
+
+4)
+[]    Buildings - seperate class
+[]    Each city has rnd array of buildings (non repeating hopefully)
+[]    Building - subobject of Buildings
+[]    Building has instance variables:
+[]        String name, int id (?)
+
+5)
+[]    Shop - extension of Building
+[]        name = "shop"
+[]        ShopInventory - extension of container 
 */

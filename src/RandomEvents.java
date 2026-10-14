@@ -4,14 +4,14 @@ public class RandomEvents {
     }
     //roll a rnd number to determine if and what type of event happens
     int rollEvent(int timeChange) {
-        int chancemaker = (int) ((Math.random() * 50));
-        if(chancemaker < 70) {
+        int chancemaker = (int) ((Math.random() * 150));
+        if(chancemaker < 50) {
             return 0;
-        } else if (chancemaker < 80) {
+        } else if (chancemaker < 60) {
             return 1;
-        } else if (chancemaker < 95) {
+        } else if (chancemaker < 70) {
             return 2;
-        } else if (chancemaker < 100) {
+        } else if (chancemaker < 80) {
             return 3;
         } else {
             return 4;
@@ -26,6 +26,20 @@ public class RandomEvents {
     
     void EventTemplate() {
         System.out.println("Random event");
+    }
+    
+    void LooseChange(Player player) {
+        int change = (int) (Math.random() * 40) - 20;
+        player.MoneyChange(change);
+        
+        //may do random phrases for money change later
+        if (change > 0) {
+            System.out.println("You found some loose change, gain " + change + " money.");
+        } else if (change == 0) {
+            System.out.println("Money is +- zero.");
+        } else {
+            System.out.println("A chimpmunk bit off some of your wallet, loose " + change + " money.");
+        }
     }
     
     String[] timeAnomalies = {"Forward into the past!", 
@@ -69,7 +83,7 @@ public class RandomEvents {
                 FoundFood(player);
             }
             case 2 -> {
-                EventTemplate();
+                LooseChange(player);
             }
             case 3 -> {
                 TimeChange(clock);
