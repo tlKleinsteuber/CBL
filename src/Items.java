@@ -32,6 +32,7 @@ public class Items {
     public class Item {
         int price;
         int id;
+        int encumbrance;
         String name;
         String description;
         String flavour;
@@ -42,6 +43,10 @@ public class Items {
         
         public Item returnSelf() {
             return this;
+        }
+        
+        public void use(Player player, Clock clock) {
+            
         }
         /*
         public String returnName() {
@@ -54,9 +59,15 @@ public class Items {
         public Food() {
             price = 4;
             id = 0;
+            encumbrance = 2;
             name = "Food";
             description = "Restores 5 hunger.";
             flavour = "It's just that - food.";
+        }
+        
+        @Override
+        public void use(Player player, Clock clock) {
+            player.HungerChange(5);
         }
     }
     
@@ -64,11 +75,17 @@ public class Items {
         public Watch() {
             price = 10;
             id = 1;
+            encumbrance = 5;
             name = "Watch";
             description = "Increases time left by 60 minutes.";
             flavour = """
                       Do not mind the logistics of time manipulation, 
                       for all will become clear in the future... or past? """;
+        }
+        
+        @Override
+        public void use(Player player, Clock clock) {
+            clock.TimeRemaining += 60;
         }
     }
     

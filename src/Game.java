@@ -9,7 +9,6 @@ import java.util.*;
 import javax.swing.*;
 
 public class Game {
-    
     static boolean CheckIfDead(Player player, Clock clock) {
         return player.hunger > player.maxHunger || clock.TimeRemaining < 0;
     }
@@ -17,14 +16,14 @@ public class Game {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         
-        Map map = new Map();
+        Items items = new Items();
+        Map map = new Map(items);
         Player player = new Player(map);
         RandomEvents rndEvent = new RandomEvents();
         Clock clock = new Clock();
         Renderer r = new Renderer(map);
-        SwingUtilities.invokeLater(() -> r.setVisible(true));        
+        SwingUtilities.invokeLater(() -> r.setVisible(true));
         
-        Items items = new Items();
         //maybe will use
         //Iterator<Items.Item> itemIterator = items.items.iterator();
         
@@ -106,7 +105,7 @@ public class Game {
                 case "add" -> {
                     String itemName = input.next();
                     for (Items.Item i : items.items) {
-                        if(i.name.equals(itemName)) {
+                        if (i.name.equals(itemName)) {
                             player.inventory.addItem(i);
                             System.out.println("Added " + i.name + " to inventory");
                         }
@@ -116,9 +115,35 @@ public class Game {
                     String itemName = input.next();
                     for (Items.Item i : items.items) {
                         //use exact names, with capital letters;
-                        if(i.name.equals(itemName)) {
+                        if (i.name.equals(itemName)) {
                             player.inventory.removeItem(i);
                             System.out.println("Removed " + i.name + " from inventory");
+                        }
+                    }
+                }
+                case "use" -> {
+                    String itemName = input.next();
+                    for (Items.Item i : items.items) {
+                        //use exact names, with capital letters;
+                        if(i.name.equals(itemName)) {
+                            i.use(player, clock);
+                            player.inventory.removeItem(i);
+                        }
+                    }
+                }
+                case "buildings" -> {
+                    //returns all buildings in the currenct city
+                    System.out.println("There are " + player.position.numberOfBuildings + " buildings in city " + player.position.cityName + ":");
+                    for(int i = 0; i < player.position.numberOfBuildings; i++) {
+                        System.out.println(player.position.buildings[i].name);
+                    }
+                }
+                case "enter" -> {
+                    String buildingName = input.next();
+                    for (Map.City.Building i : player.position.buildings) {
+                        if (i.name.equals(buildingName)) {
+                            i.Enter(player);
+                            i.Exit();
                         }
                     }
                 }
@@ -172,11 +197,10 @@ items stored by id
 [X]    Inventory - extension of Container
 
 4)
-[]    Buildings - seperate class
-[]    Each city has rnd array of buildings (non repeating hopefully)
-[]    Building - subobject of Buildings
-[]    Building has instance variables:
-[]        String name, int id (?)
+[X]    Building - sub-class of City
+[X]    Each city has rnd array of buildings (non repeating hopefully)
+[X]    Building has instance variables:
+[X]        String name, int id (?)
 
 5)
 []    Shop - extension of Building

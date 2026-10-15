@@ -37,7 +37,7 @@ public class Player {
         this.maxHunger = 100;
         
         //money
-        this.money = 0;
+        this.money = 10;
         
         //inventory
         this.inventory = new Inventory();
@@ -110,6 +110,7 @@ public class Player {
     public void returnStats(Clock clock) {
         System.out.println("Stats: ");
         System.out.println("Hunger: " + this.hunger);
+        System.out.println("Money: " + this.money);
         if (this.fame > 0) {
             System.out.println("Fame: " + this.fame);
         }

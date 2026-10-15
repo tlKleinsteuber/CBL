@@ -20,30 +20,7 @@ public class Map {
     public Edge[][] pathMatrix = new Edge[TOTALCITIES][TOTALCITIES];
     int totalPaths = 0;
     int totalEdges = 0;
-    
-    //make into Object
-    //public boolean[][] connections = new boolean[TOTALCITIES][TOTALCITIES];
-    //public int[][] distances = new int[TOTALCITIES][TOTALCITIES];    
-    
-    /*
-    
-    =================================
-            IMPORTANT NOTE
-    =================================
-        - heya! 
-        basic map instantiation is *technically* implemented now.
-        i say technically because it's unbalanced and jank as hell
-        things to do in this file from here:
-            - make the formation of paths between citiess not tied to a hard cutoff of <20 units
-                instead make it chance based, with a higher chance of a path being formed at lower distances.
-            -further randomize city ditribution. As of now, i've got a system set up so that it draws a *relatively* straight line with ~5 units of deviation
-                between x & y coordinates of cities. This results in practically no choice on where to go. The solution to this is to continue instantiating this sort of
-                "sure win" path, but instantiation some additional cities that are not constrained to small range deviations. (we should also do some cleanup and delete cities that are 
-                generated too far from any others, to such an extent that they do not have any paths whatsoever).
-            -"units" is entirely arbitrary. it will be easy to convert this to whatever unit we'd like (likely km) & change the scaling of such.
-    
-    
-    */
+    Items items;
     
     void randomizeNames() {
         Collections.shuffle(shuffleNames);
@@ -52,8 +29,8 @@ public class Map {
         }
     }
     
-    public Map() {
-        
+    public Map(Items items) {
+        this.items = items;
         randomizeNames();
         
         for (int i = 0; i < TOTALCITIES; i++) {
@@ -71,12 +48,7 @@ public class Map {
                     pathMatrix[i][j] = pathMatrix[j][j];
                 }
             }
-        }
-        
-        //System.out.println("total paths: " + totalPaths);
-        //System.out.println("total edges: " + totalEdges);
-        
-        
+        } 
     }
     
     public City SetStartCity(int i) {
@@ -92,45 +64,6 @@ public class Map {
         }
         return -1;
     }
-    
-    /*public class City {
-        //declare appropriate city information
-        String cityName;
-        String displayName;
-        Point coords;
-        public int cityID;
-        boolean hasPlayer;
-        
-        /*public City(int cityNum) {
-            //paramater cityNum helps handle city individuality (future proofing, mostly).
-            //therefore there should exist an integer counter where cities are instantiated to identify and individualize cities.
-            //assign appropriate city information. Further in development, make this generation dependant on a random (or preset) seed.
-            cityName = cityNames[cityNum];
-            cityID = cityNum;
-            
-            //In the instance that the city is either the start or end (first 2 intantiated cities), apply set data.
-            switch (cityNum) {
-                case 0 -> {
-                    cityName = "startCity";
-                    coords = new Point(0, 0);
-                    hasPlayer = false;
-                    //break;
-                }
-                case 1 -> {
-                    cityName = "Eindhoven";
-                    coords = new Point(300, 300);
-                    hasPlayer = false;
-                    //break;
-                }
-                default -> {
-                    coords = new Point((int)(Math.random()*30) + 15 * cityNum, (int)(Math.random()*30) + 15 * cityNum);
-                    hasPlayer = false;
-                    //break;
-                }
-            }
-            
-        }
-    }*/
         
     public class City {
         
@@ -139,15 +72,26 @@ public class Map {
         public boolean isValidSecondaryCity;
         public int cityID;
         public boolean hasPlayer;
+        public int numberOfBuildings;
+        public Building[] buildings;
         
         public City(int cityNum) {
             cityID = cityNum;
             cityName = CITYNAMES[cityNum];
+            
+            //gives the city a random colection of up to 5 unique buildings
+            numberOfBuildings = (int) ((Math.random() * 4) + 1);
+            SetBuildings(numberOfBuildings);
+            if (numberOfBuildings > buildings.length) {
+                numberOfBuildings = buildings.length;
+            }
+            
             if (cityNum < PRIMARYCITIES) {
                 //city instantiation for primary cities
                 if (cityNum == 0) {
                     cityName = "start";
                     coords = new Point(0, 0);
+                    numberOfBuildings = 0;
                 } else if (cityNum == PRIMARYCITIES - 1) {
                     cityName = "Eindhoven";
                     coords = new Point(350, 350);
@@ -183,6 +127,221 @@ public class Map {
                         pathMatrix[cityNum][i] = pathMatrix[i][cityNum];
                     }
                 } while (!isValidSecondaryCity);
+            }
+        }
+        
+        /*
+        
+        G           A           P
+        
+        */
+        
+        //when instantiated, will pack random amount of buildings form this set
+        HashSet<Building> allBuildings = new HashSet<>();
+        List<Building> shuffleBuildings;
+        Building[] possibleBuildings;
+        
+        //Building building;
+        Shop shop;
+        Casino casino;
+        void MakeBuildingSet() {
+            //generates each buildingg seperately for uniqueness
+            //building = new Building();
+            shop = new Shop(items);
+            casino = new Casino();
+            
+            //adds all unique buildings to a set
+            //allBuildings.add(building);
+            allBuildings.add(shop);
+            allBuildings.add(casino);
+                        
+            //shuffles the set and turns into list
+            shuffleBuildings = new ArrayList<>(allBuildings);
+            Collections.shuffle(shuffleBuildings);
+            
+            possibleBuildings = new Building[shuffleBuildings.size()];
+            //creates an array of all possible buildings for this city
+            for (int i = 0; i < shuffleBuildings.size(); i++) {
+                possibleBuildings[i] = shuffleBuildings.get(i);
+            }
+        }
+        
+        //sets buildings for city
+        void SetBuildings(int numberOfBuildings) {
+            MakeBuildingSet();
+            if (numberOfBuildings > possibleBuildings.length) {
+                numberOfBuildings = possibleBuildings.length;
+            }
+            buildings = new Building[numberOfBuildings];
+            for (int i = 0; i < numberOfBuildings; i++) {
+                buildings[i] = possibleBuildings[i];
+            }
+        }
+        
+        //super-class of all buildings
+        public class Building {
+            String name;
+            int id;
+            
+            void Enter(Player player) {
+                /*
+                Scanner input = new Scanner(System.in);
+                
+                System.out.println("ENTER MESSAGE");
+                String command = input.next();
+                while(!command.equals("leave")) {
+                
+                    //body
+                
+                    command = input.next();
+                }
+                */
+            }
+            
+            void Exit() {
+                //System.out.println("EXIT MESSAGE");
+            }
+        }
+        
+        public class Casino extends Building {
+            //allows gambling for kids
+            Casino() {
+                name = "Casino";
+                id = 1;
+            }
+            
+            @Override
+            void Enter(Player player) {
+                Scanner input = new Scanner(System.in);
+                
+                System.out.println("Gambling is FUN! How much you wanna bet?");
+                String command = input.next();
+                while(!command.equals("leave")) {
+                    int moola = Integer.parseInt(command);
+                    if(moola <= player.money) {
+                        Bet(player, moola);
+                    } else {
+                        System.out.println("U be poor!");
+                    }
+                    
+                    System.out.println("Wanna bet again?");
+                    command = input.next();
+                }
+            }
+            
+            @Override
+            void Exit() {
+                System.out.println("May the Chancemaker be with you...");
+            }
+            
+            void Bet(Player player, int moola) {
+                player.MoneyChange(-1 * moola);
+                int win = moola * ((int) (Math.random() * 100) - 50);
+                if (player.money + win < 0) {
+                    System.out.println("Congrats! You're in debt!");
+                    player.money += win;
+                } else if (win < 0) {
+                    System.out.println("You lost " + -1 * win + " money");
+                    player.money += win;
+                } else {
+                    System.out.println("You won " + win + " money");
+                    player.money += win;
+                }
+            }
+        }
+        
+        public class Shop extends Building {
+            //writes all items into array for randomization
+            ArrayList<Items.Item> initialPossibleItems;
+            Items.Item[] possibleItems;
+            ShopInventory stock;
+            
+            void ArrayofPossibilities(Items items) {
+                initialPossibleItems = new ArrayList(items.items);
+                possibleItems = new Items.Item[initialPossibleItems.size()];
+                for (int i = 0; i < initialPossibleItems.size(); i++) {
+                    possibleItems[i] = initialPossibleItems.get(i);
+                }
+            }
+            
+            Shop(Items items) {
+                name = "Shop";
+                id = 0;
+                stock = new ShopInventory();
+                ArrayofPossibilities(items);
+                for (int i = 0; i < stock.size; i++) {
+                    stock.items.add(possibleItems[(int) (Math.random() * items.items.size() - 1)]);
+                }
+            }
+            
+            class ShopInventory extends Container {
+                ShopInventory() {
+                    size = (int) (Math.random() * 9) + 1;
+                    items = new ArrayList<Items.Item>();
+                }
+            }
+            
+            @Override
+            void Enter(Player player) {
+                Scanner input = new Scanner(System.in);
+                //shows the wares
+                System.out.println("The shop has " + stock.size + " item(s) for sale:");
+                PrintStock();
+                String command = input.next();
+                String affectedItemName;
+                while(!command.equals("leave")) {
+                    switch(command) {
+                        case "buy" -> {
+                            affectedItemName = input.next();
+                            Iterator<Items.Item> iterator = stock.items.iterator();
+                            Items.Item i;
+                            while (iterator.hasNext()) {
+                                i = iterator.next();
+                                if (i.name.equals(affectedItemName)) {
+                                    if (player.money >= i.price) {
+                                        player.inventory.addItem(i);
+                                        player.MoneyChange(-1 * i.price);
+                                        iterator.remove();
+                                        stock.size--;
+                                        PrintStock();
+                                        break;
+                                    } else {
+                                        System.out.println("Not enough money!");
+                                    }
+                                } /*else {
+                                    System.out.println("Item is not in stock!");
+                                }*/
+                            }
+                        }
+                        case "sell" -> {
+                            affectedItemName = input.next();
+                            for (Items.Item i : player.inventory.items) {
+                                if (i.name.equals(affectedItemName)) {
+                                    player.MoneyChange(i.price - 2);
+                                    player.inventory.removeItem(i);
+                                } else {
+                                    System.out.println("Item is not in inventory!");
+                                }
+                            }
+                        }
+                        default -> {
+                            System.out.println("?");
+                        }
+                    }
+                    
+                    command = input.next();
+                }
+            }
+            
+            void PrintStock() {
+                for (int i = 0; i < stock.size; i++) {
+                    System.out.println(stock.items.get(i).name + ": " + stock.items.get(i).price);
+                }
+            }
+            
+            @Override
+            void Exit() {
+                System.out.println("Come back again!");
             }
         }
     }
