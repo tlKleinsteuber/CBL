@@ -10,6 +10,7 @@ public class Renderer extends javax.swing.JFrame {
     Clock clockReference;
     int cityIDPasser;
     JLabel[] l;
+    int logIncrement;
     
     public void passObjects(Clock b, Player c) {
         playerReference = c;
@@ -159,6 +160,9 @@ public class Renderer extends javax.swing.JFrame {
     
     public void addToLog(String content) {
         list1.add(content);
+        list1.makeVisible(logIncrement);
+        logIncrement++;
+        
     }
     
     public void renderTravelContainer(Map.City a) {

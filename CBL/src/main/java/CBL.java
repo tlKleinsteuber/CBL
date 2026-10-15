@@ -11,7 +11,7 @@ public class CBL {
         SwingUtilities.invokeLater(() -> r.setVisible(true));
         
         r.passObjects(clock, player);
-        player.passObjects(r.world, clock, r);
+        player.passObjects(map, clock, r);
         r.renderTravelOptions(player.getAdjacentCities(player.location), player.location);
         
         
