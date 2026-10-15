@@ -5,6 +5,7 @@ public class Clock {
     LocalDate STARTDATE = LocalDate.of(2026, 6, 30);
     LocalDate currentDate = STARTDATE;
     LocalDate endDate;
+    ChronoUnit time;
     
     // constructor paramter = the maximum number of days to take the journey
     Clock(int days){
