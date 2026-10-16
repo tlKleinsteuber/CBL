@@ -17,11 +17,11 @@
 	[X] map rendering
 		- should indicate where the player is, as well as the start and end location, but only in text, not visually
 
-[] rudimentary statistics
-	[] hunger
+[X] rudimentary statistics
+	[X] hunger
 		- increases with time. When exceeding a 100%, player is hospitalized and loses
 
-[] rudimentary random events
+[X] rudimentary random events
 	- during high priority only a few basic events that affect hunger and/or time 
 
 [X] rudimentary time system
@@ -29,9 +29,9 @@
 	[X] time limit
 		- the game ends after a predetermined amount of time. If the player makes it to the end node, they win. 
 
-[] rudimentary cities
+[X] rudimentary cities
 	- when a player is in a city, they are provided with locations to enter (in high priority dev., travel time & relative location are NOT accounted for)
-	[] rudimentary shop 
+	[X] rudimentary shop 
 		- at this point, allows the purchase of only food, which should be automatically eaten to lower hunger
 
 
