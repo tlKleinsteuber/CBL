@@ -156,6 +156,7 @@ public class Map {
             //allBuildings.add(building);
             allBuildings.add(shop);
             allBuildings.add(casino);
+            allBuildings.add(temple);
                         
             //shuffles the set and turns into list
             shuffleBuildings = new ArrayList<>(allBuildings);
@@ -393,23 +394,36 @@ public class Map {
             
             @Override
             void Enter(Player player) {
-                /*
                 Scanner input = new Scanner(System.in);
                 
-                System.out.println("ENTER MESSAGE");
+                System.out.println("Come, pray! For 10 bob be cleansed your soul!");
+                System.out.println("Do you accept?");
                 String command = input.next();
                 while(!command.equals("leave")) {
-                
-                    //body
-                
+                    switch (command) {
+                        case "Yes" -> {
+                            if (player.money >= 10) {
+                                player.MoneyChange(-1 * 10);
+                                player.CurseStatusChange(0);
+                                System.out.println("YAY!");
+                            } else {
+                                System.out.println("According to the prosperity gospel, you cannot be blessed!");
+                            }
+                        }
+                        case "No" -> {
+                            System.out.println("Aww...");
+                        }
+                        default -> {
+                            System.out.println("?");
+                        }
+                    }
                     command = input.next();
                 }
-                */
             }
             
             @Override
             void Exit() {
-                //System.out.println("EXIT MESSAGE");
+                System.out.println("The Grandmatriarch will be pleased.");
             }
         }
     }
