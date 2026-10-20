@@ -39,7 +39,7 @@ public class Map {
         
         for (int i = 0; i < TOTALCITIES; i++) {
             for (int j = 0; j < TOTALCITIES; j++) {
-                pathMatrix[i][j] = new Edge(cities[i], cities[j]);
+                pathMatrix[i][j] = new Edge(cities[i], cities[j], i, j);
                 totalEdges++;
                 if (pathMatrix[i][j].isPath) {
                     totalPaths++;
@@ -101,7 +101,7 @@ public class Map {
                 }
                 for (int i = 0; i < cityNum; i++) {
                     //instantiates a new edge between all previously instantiated cities & this one. Sets the distance too.
-                    pathMatrix[i][cityNum] = new Edge(cities[i], this);
+                    pathMatrix[i][cityNum] = new Edge(cities[i], this, cities[i].cityID, this.cityID);
                     pathMatrix[i][cityNum].distance = (int)Math.sqrt(Math.pow(Math.abs(coords.x - cities[i].coords.x), 2) + Math.pow(Math.abs(coords.y - cities[i].coords.y), 2));
                     pathMatrix[cityNum][i] = pathMatrix[i][cityNum];
                 }
@@ -119,7 +119,7 @@ public class Map {
                     coords = new Point(coords = new Point((int)(Math.random() * 460),(int)(Math.random()* 460)));
                     
                     for (int i = 0; i < cityNum; i++) {
-                        pathMatrix[i][cityNum] = new Edge(cities[i], this);
+                        pathMatrix[i][cityNum] = new Edge(cities[i], this, cities[i].cityID, this.cityID);
                         // (FORMULA) criteria for failed cities. Regenerates if these are satisfied.
                         if (pathMatrix[i][cityNum].distance < 100) {
                             isValidSecondaryCity = false;
@@ -144,11 +144,13 @@ public class Map {
         //Building building;
         Shop shop;
         Casino casino;
+        Temple temple;
         void MakeBuildingSet() {
             //generates each buildingg seperately for uniqueness
             //building = new Building();
             shop = new Shop(items);
             casino = new Casino();
+            temple = new Temple();
             
             //adds all unique buildings to a set
             //allBuildings.add(building);
@@ -269,14 +271,14 @@ public class Map {
                 id = 0;
                 stock = new ShopInventory();
                 ArrayofPossibilities(items);
-                for (int i = 0; i < stock.size; i++) {
+                for (int i = 0; i < stock.itemCount; i++) {
                     stock.items.add(possibleItems[(int) (Math.random() * items.items.size() - 1)]);
                 }
             }
             
             class ShopInventory extends Container {
                 ShopInventory() {
-                    size = (int) (Math.random() * 9) + 1;
+                    itemCount = (int) (Math.random() * 9) + 1;
                     items = new ArrayList<Items.Item>();
                 }
             }
@@ -285,7 +287,7 @@ public class Map {
             void Enter(Player player) {
                 Scanner input = new Scanner(System.in);
                 //shows the wares
-                System.out.println("The shop has " + stock.size + " item(s) for sale:");
+                System.out.println("The shop has " + stock.itemCount + " item(s) for sale:");
                 PrintStock();
                 String command = input.next();
                 String affectedItemName;
@@ -299,14 +301,20 @@ public class Map {
                                 i = iterator.next();
                                 if (i.name.equals(affectedItemName)) {
                                     if (player.money >= i.price) {
-                                        player.inventory.addItem(i);
-                                        player.MoneyChange(-1 * i.price);
-                                        iterator.remove();
-                                        stock.size--;
-                                        PrintStock();
-                                        break;
+                                        if(player.inventory.returnSize() + i.encumbrance <= player.inventory.maxSize) {
+                                            player.inventory.addItem(i);
+                                            player.MoneyChange(-1 * i.price);
+                                            iterator.remove();
+                                            stock.itemCount--;
+                                            PrintStock();
+                                            break;
+                                        } else {
+                                            System.out.println("Not enough space!");
+                                            break;
+                                        }
                                     } else {
                                         System.out.println("Not enough money!");
+                                        break;
                                     }
                                 } /*else {
                                     System.out.println("Item is not in stock!");
@@ -315,14 +323,46 @@ public class Map {
                         }
                         case "sell" -> {
                             affectedItemName = input.next();
-                            for (Items.Item i : player.inventory.items) {
-                                if (i.name.equals(affectedItemName)) {
-                                    player.MoneyChange(i.price - 2);
-                                    player.inventory.removeItem(i);
-                                } else {
-                                    System.out.println("Item is not in inventory!");
+                            boolean isInInventory = false;
+                            for (int i = 0; i < player.inventory.itemCount; i++) {
+                                if(player.inventory.items.get(i).name.equals(affectedItemName)) {
+                                    isInInventory = true;
+                                    if (player.inventory.items.get(i).price < 0) {
+                                        System.out.println("You cannot sell this item!");
+                                        break;
+                                    } else {
+                                        player.MoneyChange(player.inventory.items.get(i).price - 2);
+                                        player.inventory.removeItem(player.inventory.items.get(i));
+                                        break;
+                                    }
                                 }
                             }
+                            if (!isInInventory) {
+                                System.out.println("Item is not in inventory!");
+                            }
+                            
+                            /*
+                            Iterator<Items.Item> iterator = player.inventory.items.iterator();
+                            Items.Item i;
+                            while (iterator.hasNext()) {
+                                i = iterator.next();
+                                if (i.name.equals(affectedItemName)) {
+                                    if (i.price < 0) {
+                                        System.out.println("You cannot sell this item!" + i.name);
+                                        break;
+                                    } else {
+                                        player.MoneyChange(i.price - 2);
+                                        //player.inventory.removeItem(i);
+                                        player.inventory.itemCount--;
+                                        iterator.remove();
+                                        break;
+                                    }
+                                } else {
+                                    System.out.println("Item is not in inventory!");
+                                    break;
+                                }
+                            }
+                            */
                         }
                         default -> {
                             System.out.println("?");
@@ -334,7 +374,7 @@ public class Map {
             }
             
             void PrintStock() {
-                for (int i = 0; i < stock.size; i++) {
+                for (int i = 0; i < stock.itemCount; i++) {
                     System.out.println(stock.items.get(i).name + ": " + stock.items.get(i).price);
                 }
             }
@@ -344,6 +384,34 @@ public class Map {
                 System.out.println("Come back again!");
             }
         }
+        
+        public class Temple extends Building {
+            Temple() {
+                name = "Temple";
+                id = 2;
+            }
+            
+            @Override
+            void Enter(Player player) {
+                /*
+                Scanner input = new Scanner(System.in);
+                
+                System.out.println("ENTER MESSAGE");
+                String command = input.next();
+                while(!command.equals("leave")) {
+                
+                    //body
+                
+                    command = input.next();
+                }
+                */
+            }
+            
+            @Override
+            void Exit() {
+                //System.out.println("EXIT MESSAGE");
+            }
+        }
     }
     
     public class Edge {
@@ -351,7 +419,7 @@ public class Map {
         boolean isPath;
         int quality;
         
-        public Edge(City a, City b) {
+        public Edge(City a, City b, int cityNum1, int cityNum2) {
             isPath = false;
             distance = (int)Math.sqrt(Math.pow(Math.abs(a.coords.x - b.coords.x), 2) + Math.pow(Math.abs(a.coords.y - b.coords.y), 2));
             //Primary - primary path generation
@@ -371,7 +439,11 @@ public class Map {
                 }
             }
             if (isPath){
-                quality = (int)(Math.random()*256);
+                if (cityNum1 < PRIMARYCITIES && cityNum2 < PRIMARYCITIES) {
+                    quality = (int)(Math.random()*128);
+                } else {
+                    quality = (int)(Math.random()*256);
+                }
             }
         }
     }

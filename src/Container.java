@@ -4,19 +4,22 @@ public class Container {
     //size seem redundant, can just return items.size();
     int size;
     int maxSize;
+    int itemCount;
     ArrayList<Items.Item> items;
     
     void addItem(Items.Item item) {
-        if(size < maxSize) {
+        if(size + item.encumbrance <= maxSize) {
             items.add(item);
-            size++;
+            size += item.encumbrance;
+            itemCount++;
         }
     }
     
     void removeItem(Items.Item item) {
         if(size > 0) {
             items.remove(item);
-            size--;
+            size -= item.encumbrance;
+            itemCount--;
         }
     }
     
@@ -30,5 +33,9 @@ public class Container {
         
     int returnSize() {
         return size;
+    }
+    
+    int returnItemCount() {
+        return itemCount;
     }
 }

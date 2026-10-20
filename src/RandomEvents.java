@@ -1,31 +1,47 @@
+import java.util.*;
+
 public class RandomEvents {
-    public RandomEvents() {
-        
+    Items items;
+    public RandomEvents(Items items) {
+        this.items = items;
     }
     //roll a rnd number to determine if and what type of event happens
     int rollEvent(int timeChange) {
-        int chancemaker = (int) ((Math.random() * 150));
+        int chancemaker = (int) ((Math.random() * 100));
+        System.out.println("Roll: " + chancemaker);
         if(chancemaker < 50) {
             return 0;
-        } else if (chancemaker < 60) {
+        } else if (chancemaker < 55) {
             return 1;
-        } else if (chancemaker < 70) {
+        } else if (chancemaker < 60) {
             return 2;
-        } else if (chancemaker < 80) {
+        } else if (chancemaker < 65) {
             return 3;
-        } else {
+        } else if (chancemaker < 70) {
             return 4;
+        } else if (chancemaker < 75) {
+            return 5;
+        } else if (chancemaker < 80) {
+            return 6;
+        } else if (chancemaker < 85) {
+            return 7;
+        } else if (chancemaker < 90) {
+            return 8;
+        } else if (chancemaker < 95) {
+            return 9;
+        } else {
+            return 10;
         }
+    }
+    
+    void EventTemplate() {
+        System.out.println("Random event");
     }
     
     void FoundFood(Player player) {
         int change = (int) ((Math.random() * 4) + 1);
         player.HungerChange(change);
         System.out.println("You found some food, restore " + change + " hunger.");
-    }
-    
-    void EventTemplate() {
-        System.out.println("Random event");
     }
     
     void LooseChange(Player player) {
@@ -74,6 +90,26 @@ public class RandomEvents {
         System.out.println("You met " + celebrity + ", gain fame.");
     }
     
+    void Curse(Player player) {
+        player.CurseStatusChange(1);
+        System.out.println("You have been cursed! All stats increase 2x while travelling.");
+    }
+    
+    void Rocks(Player player, Items items) {
+        Iterator<Items.Item> iterator = items.items.iterator();
+        Items.Item rock;
+        int num = player.inventory.maxSize - player.inventory.size;
+        while (iterator.hasNext()) {
+            rock = iterator.next();
+            if(rock.name.equals("Rock")) {
+                for (int j = 0; j < num; j++) {
+                    player.inventory.addItem(rock);
+                }
+            }
+        }
+        System.out.println("ROCKS");
+    }
+    
     void DoEvent(Player player, Clock clock, int id) {
         switch(id) {
             case 0 -> {
@@ -90,6 +126,27 @@ public class RandomEvents {
             }
             case 4 -> {
                 MetCelebrity(player);
+            }
+            case 5 -> {
+                Curse(player);
+            }
+            case 6 -> {
+                Rocks(player, items);
+            }
+            case 7 -> {
+                //
+            }
+            case 8 -> {
+                //
+            }
+            case 9 -> {
+                //
+            }
+            case 10 -> {
+                //
+            }
+            default -> {
+                //nothing
             }
         }
     }

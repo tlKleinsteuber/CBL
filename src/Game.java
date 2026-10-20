@@ -10,7 +10,7 @@ import javax.swing.*;
 
 public class Game {
     static boolean CheckIfDead(Player player, Clock clock) {
-        return player.hunger > player.maxHunger || clock.TimeRemaining < 0;
+        return player.hunger > player.maxHunger || player.thirst > player.maxThirst || player.exhaustion > player.maxExhaustion || clock.TimeRemaining < 0;
     }
     
     public static void main(String[] args) {
@@ -19,7 +19,7 @@ public class Game {
         Items items = new Items();
         Map map = new Map(items);
         Player player = new Player(map);
-        RandomEvents rndEvent = new RandomEvents();
+        RandomEvents rndEvent = new RandomEvents(items);
         Clock clock = new Clock();
         Renderer r = new Renderer(map);
         SwingUtilities.invokeLater(() -> r.setVisible(true));
@@ -96,8 +96,8 @@ public class Game {
                 case "inventory" -> {
                     //return all items in inventory
                     //returns only name, can set to return other things
-                    System.out.println("You have " + player.inventory.returnSize() + " items:");
-                    for (int i = 0; i < player.inventory.returnSize(); i++) {
+                    System.out.println("You have " + player.inventory.returnItemCount() + " items:");
+                    for (int i = 0; i < player.inventory.returnItemCount(); i++) {
                         System.out.println(player.inventory.items.get(i).name);
                     }
                     //System.out.println(items.items.);
@@ -147,6 +147,9 @@ public class Game {
                         }
                     }
                 }
+                case "rest" -> {
+                    player.rest(clock);
+                }
                 default -> {
                     System.out.println("?");
                 }
@@ -171,39 +174,49 @@ public class Game {
         */
         //r.setVisible(false);
     }
-}   
+}
 
 /*
-Buildings - seperate class or object in map/city?
-shop - subobject of building or extension?
-shop inventory - extension of container/ array list of container?
-Container - class with item id int?
-inventory - container extension in player or an array list of container?
-items stored by id
-*/
+1) New stats:
+    [X] thirst - similar to hunger, increases by less, has lower maxThirst
+    [X] carryWeight - sum of weight of all items in inventory
+    [X] exhaustion - increases with travel time (less than others) * carryWeight
+    [X] overallWellbeing - sum(maxStat - currentStat) / sum(maxStat)
+    Boolean variables (not survival stats):
+    [] boolean hasBackpack - is decided wether the player has a backpack
+    [X] boolean isCursed - after random event set to true, makes stat increases double, may be cured in church
 
-/*
-1)
-[X]    Items
-[X]     Set of all items for use
+2) New items:
+    [] Backpack - does not take up inventory space, weight = 0, increases inventory space (size) by 10
+    [] Drink - reduce thirst
+    [] Rock - heavy, may not sell, may only discard one per city
+    [] Teleporter - allow to instantly travel to any city in distance regardless of connections, no time or stat changes occur
+    Stat trading items (increase stats more than single stat items, but also reduce other stats):
+    [] Coffee - reduce exhaustion, increase thirst
+    [] item 1 - reduce exhaustion, increase hunger
+    [] Jawbraker - reduce hunger, increase exhaustion
+    [] item 2 - reduce hunger, increase thirst
+    [] item 3 - reduce thirst, increase hunger
+    [] item 4 - reduce thirst, increase exhaustion
 
-2)
-[X]    Container - seperate class
-[X]      int size, arraylist items
-[X]    Container methods
-[?]        add/remove item, get item by name/id
+3) New buildings:
+    [] Temple - allow to cure curse for money
+    [] building 1 - TBD
+    [] building 2 - TBD
+    [] building 3 - TBD
+    [] building 4 - TBD
+    [] building 5 - TBD
+    [] building 6 - TBD
 
-3)
-[X]    Inventory - extension of Container
+4) New random events:
+    [X] Rocks fill up empty inventory space
+    [X] Become cursed
+    [] event that gives a random item
 
-4)
-[X]    Building - sub-class of City
-[X]    Each city has rnd array of buildings (non repeating hopefully)
-[X]    Building has instance variables:
-[X]        String name, int id (?)
-
-5)
-[]    Shop - extension of Building
-[]        name = "shop"
-[]        ShopInventory - extension of container 
+5) New mechnics:
+    [X] item weight - each item has its own weight
+    [X] all paths between primary cities have a quality cap lower than max to encourage 'exploration'
+    [] rest - exchange time and stats to reduce exhaustion
+    [] difficulties - determine starting stats and maxStats
+    [] weather - impact calculations with path quality, heat reduces thirst more
 */

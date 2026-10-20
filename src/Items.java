@@ -8,11 +8,6 @@ public class Items {
     
     */
     
-    //should id's be set manually?
-    
-    //map of items and ids
-    //IF MAP WOULD EVEN WORK (1:33 AM)
-    
     //set of items, methods check for mathing id
     HashSet<Item> items = new HashSet<>();
 
@@ -21,11 +16,13 @@ public class Items {
         Item food = new Food();
         Item watch = new Watch();
         Item teleporter = new Teleporter();
+        Item rock = new Rock();
         
         //adds all items to the item set
         items.add(food);
         items.add(watch);
         items.add(teleporter);
+        items.add(rock);
     }
         
     //superclass for all items
@@ -33,6 +30,7 @@ public class Items {
         int price;
         int id;
         int encumbrance;
+        int weight;
         String name;
         String description;
         String flavour;
@@ -60,6 +58,7 @@ public class Items {
             price = 4;
             id = 0;
             encumbrance = 2;
+            weight = 1;
             name = "Food";
             description = "Restores 5 hunger.";
             flavour = "It's just that - food.";
@@ -75,7 +74,8 @@ public class Items {
         public Watch() {
             price = 10;
             id = 1;
-            encumbrance = 5;
+            encumbrance = 1;
+            weight = 1;
             name = "Watch";
             description = "Increases time left by 60 minutes.";
             flavour = """
@@ -86,6 +86,23 @@ public class Items {
         @Override
         public void use(Player player, Clock clock) {
             clock.TimeRemaining += 60;
+        }
+    }
+    
+    public class Rock extends Item{
+        public Rock() {
+            price = -1;
+            id = 3;
+            encumbrance = 1;
+            weight = 10;
+            name = "Rock";
+            description = "Heavy. Can only discard one before moving";
+            flavour = "These make great pets.";
+        }
+        
+        @Override
+        public void use(Player player, Clock clock) {
+            //player.HungerChange(5);
         }
     }
     

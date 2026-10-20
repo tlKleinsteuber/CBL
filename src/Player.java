@@ -8,6 +8,12 @@ public class Player {
     //survival
     int hunger;
     int maxHunger;
+    int thirst;
+    int maxThirst;
+    int exhaustion;
+    int maxExhaustion;
+    
+    double overallWellbeing;
     
     //money
     int money;
@@ -18,13 +24,26 @@ public class Player {
         Inventory() {
             size = 0;
             maxSize = 10;
+            itemCount = 0;
             items = new ArrayList<Items.Item>();
+        }
+        
+        int carryWeight() {
+            int sum = 0;
+            for (Items.Item i : items) {
+                sum += i.weight;
+            }
+            return sum;
         }
     }
     Inventory inventory;
+    //int carryWeight;
+    boolean hasBackpack;
     
     //wisdom
     int fame;
+    boolean isCursed;
+    boolean rockDiscarded;
     
     //position
     int startID;
@@ -36,14 +55,25 @@ public class Player {
         this.hunger = 0;
         this.maxHunger = 100;
         
+        this.thirst = 0;
+        this.maxThirst = 50;
+        
+        this.exhaustion = 0;
+        this.maxExhaustion = 100;
+        
+        this.overallWellbeing = ((this.maxHunger - this.hunger) + (this.maxThirst - this.thirst) + (this.maxExhaustion - this.exhaustion))/(this.maxHunger + this.maxThirst + this.maxExhaustion);
+        
         //money
-        this.money = 10;
+        this.money = 1000;
         
         //inventory
         this.inventory = new Inventory();
+        this.hasBackpack = false;
         
         //wisdom
         this.fame = 0;
+        this.isCursed = false;
+        this.rockDiscarded = false;
         
         //position
         //can choose id of starting city
@@ -67,8 +97,16 @@ public class Player {
     
     //changes stats when moving
     public void MovementStatChanges(int timeChange) {
-        //hunger is incremented based on distance and quality
-        HungerChange(-1 * (timeChange / 10));
+        if(this.isCursed) {
+            HungerChange(-2 * (timeChange / 10));
+            ThirstChange(-2 * (timeChange / 15));
+            ExhaustionChange(-2 * (timeChange / 30) * ((this.inventory.carryWeight() / 4) + 1));
+        } else {
+            HungerChange(-1 * (timeChange / 10));
+            ThirstChange(-1 * (timeChange / 15));
+            ExhaustionChange(-1 * (timeChange / 30) * ((this.inventory.carryWeight() / 4) + 1));
+        }
+        WellbeingChange();
     }
     
     public void HungerChange(int change) {
@@ -76,6 +114,24 @@ public class Player {
         if (this.hunger < 0) {
             this.hunger = 0;
         }
+    }
+    
+    public void ThirstChange(int change) {
+        this.thirst -= change;
+        if (this.thirst < 0) {
+            this.thirst = 0;
+        }
+    }
+    
+    public void ExhaustionChange(int change) {
+        this.exhaustion -= change;
+        if (this.exhaustion < 0) {
+            this.exhaustion = 0;
+        }
+    }
+    
+    public void WellbeingChange() {
+        this.overallWellbeing = (((this.maxHunger - this.hunger) + (this.maxThirst - this.thirst) + (this.maxExhaustion - this.exhaustion)) * 1.0)/((this.maxHunger + this.maxThirst + this.maxExhaustion) * 1.0);
     }
     
     public void MoneyChange(int change) {
@@ -87,6 +143,28 @@ public class Player {
     
     public void FameChange() {
         this.fame += (int) (Math.random() * 5);
+    }
+    
+    public void CurseStatusChange(int change) {
+        switch (change) {
+            case 0 -> {
+                this.isCursed = false;
+            }
+            case 1 -> {
+                this.isCursed = true;
+            }
+            default -> {
+                //nothing
+            }
+        }
+    }
+    
+    public void rest(Clock clock) {
+        HungerChange(-1 * 10);
+        ThirstChange(-1 * 5);
+        ExhaustionChange(30);
+        clock.TimePass(30);
+        WellbeingChange();
     }
     
     public boolean isConnected (Map map, String name) {
@@ -109,7 +187,11 @@ public class Player {
     
     public void returnStats(Clock clock) {
         System.out.println("Stats: ");
-        System.out.println("Hunger: " + this.hunger);
+        System.out.println("Hunger: " + this.hunger + "/" + this.maxHunger);
+        System.out.println("Thirst: " + this.thirst + "/" + this.maxThirst);
+        System.out.println("Exhaustion: " + this.exhaustion + "/" + this.maxExhaustion);
+        System.out.println("Overall wellbeing: " + String.format("%.2f", (this.overallWellbeing * 100)) + "%");
+        System.out.println("Carry weigth: " + this.inventory.carryWeight());
         System.out.println("Money: " + this.money);
         if (this.fame > 0) {
             System.out.println("Fame: " + this.fame);
