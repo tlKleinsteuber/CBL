@@ -1,4 +1,6 @@
 import java.awt.Point;
+import java.util.Collections;
+import java.util.*;
 
 /*
            /============/ MAP CLASS DOCUMENTATION \============\
@@ -7,7 +9,9 @@ import java.awt.Point;
 
 public class Map {
     
-    public String[] CITYNAMES = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
+    public String[] allNames = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
+    List<String> shuffleNames = new ArrayList<>(Arrays.asList(allNames));
+    String[] CITYNAMES = new String[allNames.length];
     public int PATHCHANCECONSTANT = 150;
     public double MINSECONDARYCITYDISTANCE = 30.0;
     public int TOTALCITIES = 23;
@@ -26,7 +30,15 @@ public class Map {
         public boolean isValidSecondaryCity;
         public int cityID;
         
+        void randomizeNames() {
+            Collections.shuffle(shuffleNames);
+            for (int i = 0; i < allNames.length; i++) {
+                CITYNAMES[i] = shuffleNames.get(i);
+            }
+        }
+        
         public City(int cityNum) {
+            randomizeNames();
             cityID = cityNum;
             cityName = CITYNAMES[cityNum];
             if (cityNum < PRIMARYCITIES) {

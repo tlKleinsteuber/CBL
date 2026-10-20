@@ -54,6 +54,6 @@ public class Player {
     
     
     Player() {
-        inventory = new Container(20, "inventory");
+        inventory = new Container(20, "inventory", this);
     }
 }
