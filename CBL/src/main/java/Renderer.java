@@ -13,9 +13,19 @@ public class Renderer extends javax.swing.JFrame {
     JLabel[] l;
     int logIncrement;
     
+    public void setMoneyLabel(String val) {
+        jLabel4.setText(val);
+    }
+    
+    public void setWellbeingBar(int val){
+        jProgressBar1.setValue(val);
+    }
+    
     public void passObjects(Clock b, Player c) {
         playerReference = c;
         clockReference = b;   
+        jProgressBar1.setValue((int)playerReference.overallWellbeing);
+        jLabel3.setText("Location: " + playerReference.location.cityName);
     }
     
     //don't worry about input handling. the input of a is determined by a getAdjacentCities() method call.
@@ -40,7 +50,7 @@ public class Renderer extends javax.swing.JFrame {
             
             this.add(new JLabel("distance: " + distance));
             this.add(new JLabel("quality : " + quality));
-            this.add(new JLabel("travel time: " + travelTime));
+            this.add(new JLabel("travel time: " + (distance + 5 - (quality / 51))));
             this.add(new JLabel("traveling to : " + travelingTo));
             buttonList.add(new JButton("travel"));
             this.add(buttonList.get(travelNum));
@@ -58,6 +68,7 @@ public class Renderer extends javax.swing.JFrame {
                     playerReference.tryMoveTo(world.cities[i]);
                     jLabel3.setText("location: " + world.cities[i].cityName);
                     l[i].setBackground(Color.red);
+                    jLabel3.setText("Location: " + world.cities[i].cityName);
                     
                 }
             });
@@ -139,6 +150,9 @@ public class Renderer extends javax.swing.JFrame {
         l = new JLabel[world.TOTALCITIES];
         pathQualityHelper = new Color[world.TOTALCITIES][world.TOTALCITIES];
         mapRender();
+        jProgressBar1.setMaximum(100);
+        jProgressBar1.setMinimum(0);
+        
         
         for (int i = 0; i < world.TOTALCITIES; i++) {
             for (int j = 0; j < world.TOTALCITIES; j++) {

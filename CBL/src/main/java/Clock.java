@@ -1,22 +1,29 @@
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
 import java.time.temporal.ChronoUnit;
 
 public class Clock {
-    LocalDate STARTDATE = LocalDate.of(2026, 6, 30);
-    LocalDate currentDate = STARTDATE;
-    LocalDate endDate;
-    ChronoUnit time;
+    LocalDateTime STARTDATE = LocalDateTime.of(2026, Month.MARCH, 11, 1, 30);
+    LocalDateTime currentDate = STARTDATE;
+    LocalDateTime endDate;
+    
     
     // constructor paramter = the maximum number of days to take the journey
     Clock(int days){
         endDate =  STARTDATE.plus(days, ChronoUnit.DAYS);
         
+        
+    }
+    
+    public String getDate(){
+        return "" + currentDate.getYear() + "-" + currentDate.getMonthValue() + "-" + currentDate.getDayOfMonth();
+    }
+    public String getTime() {
+        return "" + currentDate.getHour() + ":" + currentDate.getMinute();
     }
     
     
-    //all significant actions have a minimum time of 1 minute.
-    //1440 minutes in 24 hours
-    //thus increment current day & subtract 1439 minutes when exceeded.
     
     public void passTime(int minutes) {
         currentDate = currentDate.plus(minutes, ChronoUnit.MINUTES);
