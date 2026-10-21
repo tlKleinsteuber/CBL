@@ -50,9 +50,11 @@ public class Player {
     public void tryMoveTo(Map.City a){
         int distance = worldReference.pathMatrix[a.cityID][location.cityID].distance;
         int quality = worldReference.pathMatrix[a.cityID][location.cityID].quality;
-        clockReference.passTime(distance + 5 - (quality / 51));
-        MovementStatChanges(distance + 5 - (quality / 51));
-        renderReference.setWellbeingBar((int)overallWellbeing);
+        int timeToMove = distance + 5 - (quality / 51);
+        clockReference.passTime(timeToMove);
+        MovementStatChanges(timeToMove);
+        WellbeingChange();
+        renderReference.setWellbeingBar();
         
         if (worldReference.pathMatrix[a.cityID][location.cityID].isPath) {
             location = a;
@@ -70,13 +72,12 @@ public class Player {
         if (isCursed) {
             HungerChange(-2 * (timeChange / 10));
             ThirstChange(-2 * (timeChange / 15));
-            ExhaustionChange(-2 * (timeChange / 30) * ((inventory.getCurrentEncumbrance() / 4) + 1));
+            ExhaustionChange(-2 * (timeChange / 30) * ((inventory.currentEncumbrance / 4) + 1));
         } else {
             HungerChange(-1 * (timeChange / 10));
             ThirstChange(-1 * (timeChange / 15));
-            ExhaustionChange(-1 * (timeChange / 30) * ((inventory.getCurrentEncumbrance() / 4) + 1));
+            ExhaustionChange(-1 * (timeChange / 30) * ((inventory.currentEncumbrance / 4) + 1));
         }
-        WellbeingChange();
     }
 
     public void HungerChange(int change) {
@@ -101,8 +102,15 @@ public class Player {
     }
 
     public void WellbeingChange() {
-        //figure out whuts up with this formula
-        overallWellbeing =  (((maxHunger - hunger) + (maxThirst - thirst) + (maxExhaustion - exhaustion)) * 1.0) / ((maxHunger + maxThirst + maxExhaustion) * 1.0);
+        overallWellbeing = ((((this.maxHunger - this.hunger) + (this.maxThirst - this.thirst) + (this.maxExhaustion - this.exhaustion)) * 1.0)/((this.maxHunger + this.maxThirst + this.maxExhaustion) * 1.0)) * 100;
+            //alternate wellbeing calculation.
+        //overallWellbeing = 100 - ((hunger / (maxHunger + 0.0)) + (thirst / (maxThirst + 0.0)) + (exhaustion / (maxExhaustion + 0.0))) * 100;
+       
+        System.out.println("Stats: ");
+        System.out.println("Hunger: " + this.hunger + "/" + this.maxHunger);
+        System.out.println("Thirst: " + this.thirst + "/" + this.maxThirst);
+        System.out.println("Exhaustion: " + this.exhaustion + "/" + this.maxExhaustion);
+        System.out.println("Overall wellbeing: " + String.format("%.2f", (this.overallWellbeing * 100)) + "%");
         renderReference.revalidate();
     }
 
@@ -143,7 +151,7 @@ public class Player {
     
     
     Player() {
-        inventory = new Container(20, "inventory", this);
+        inventory = new Container(20, "inventory");
         //survival
         hunger = 0;
         maxHunger = 100;
@@ -154,7 +162,7 @@ public class Player {
         exhaustion = 0;
         maxExhaustion = 100;
 
-        overallWellbeing = 100;//((maxHunger - hunger) + (maxThirst - thirst) + (maxExhaustion - exhaustion)) / (maxHunger + maxThirst + maxExhaustion);
+        overallWellbeing = 100.00;
 
         //money
         money = 1000;

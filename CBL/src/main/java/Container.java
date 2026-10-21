@@ -1,60 +1,48 @@
-import java.util.ArrayList;
-
+import java.util.*;
 
 public class Container {
+    //size seem redundant, can just return items.size();
+    int currentEncumbrance;
     int maxCapacity;
+    int itemCount;
     String containerName;
-    ArrayList<Item> containerContents;
-    Player playerReference;
+    ArrayList<Items.Item> items;
     
-    public void dropItem(Item a) {
-        a = null;
-    }
     
-    public void addItemToContainer(Item a){
-        if (getCurrentEncumbrance() < maxCapacity) {
-            playerReference.inventory.containerContents.add(a);
-            
-        }
-    }
-    
-    public Item createItem() {
-        return new Item(3);
-    }
-    
-    public int getCurrentEncumbrance() {
-        int encumbraceAccumalator = 0;
-        for (int i = 0; i < containerContents.size(); i++) {
-            encumbraceAccumalator += containerContents.get(i).itemEncumbrance;
-        }
-        return encumbraceAccumalator;
-    }
-    
-    Container(int capacity, String name, Player a) {
+    public Container(int capacity, String name){
         maxCapacity = capacity;
-        containerContents = new ArrayList<Item>();
         containerName = name;
-        playerReference = a;
     }
     
-    public class Item {
-        int itemEncumbrance;    
-        //interactType will be set to whatever primary action should be able to be done using the object. For example, food will have a value of "eat", etc etc bluh bluh!
-        String interactType;
-        
-        Item(int encumbrance) {
-            itemEncumbrance = encumbrance;
+    void addItem(Items.Item item) {
+        if(currentEncumbrance + item.encumbrance <= maxCapacity) {
+            items.add(item);
+            currentEncumbrance += item.encumbrance;
+            itemCount++;
+        }
+    }
+    
+    void removeItem(Items.Item item) {
+        if(currentEncumbrance > 0) {
+            items.remove(item);
+            currentEncumbrance -= item.encumbrance;
+            itemCount--;
+        }
+    }
+    
+    boolean hasItem(Items.Item item) {
+        return items.contains(item);
+    }
+    
+    void setSize() {
+            currentEncumbrance = items.size();
         }
         
+    int returnSize() {
+        return currentEncumbrance;
     }
-
-
-
-
+    
+    int returnItemCount() {
+        return itemCount;
+    }
 }
-
-
-
-
-
-
