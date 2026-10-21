@@ -9,8 +9,8 @@ import java.util.*;
 
 public class Map {
     
-    public String[] allNames = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
-    List<String> shuffleNames = new ArrayList<>(Arrays.asList(allNames));
+    public String[] allNames = {"Atlantis", "Dallas", "Not-Paris", "Tokyo", "Elektrėnai", "Mumbai", "Takai", "North America", "Aberdeen", "Abilene", "Akron", "Albany", "Albuquerque", "Alexandria", "Allentown", "Amarillo", "Anaheim", "Anchorage", "Ann Arbor", "Antioch", "Apple Valley", "Appleton", "Arlington", "Arvada", "Asheville", "Athens", "Atlanta", "Atlantic City", "Augusta", "Aurora", "Austin", "Bakersfield", "Baltimore", "Barnstable", "Baton Rouge", "Beaumont", "Bel Air", "Bellevue", "Berkeley", "Bethlehem", "Billings", "Birmingham", "Bloomington"};
+    List<String> shuffleNames;
     String[] CITYNAMES = new String[allNames.length];
     public int PATHCHANCECONSTANT = 150;
     public double MINSECONDARYCITYDISTANCE = 30.0;
@@ -22,6 +22,13 @@ public class Map {
     int totalPaths = 0;
     int totalEdges = 0;
    
+    void randomizeNames() {
+        Collections.shuffle(shuffleNames);
+        for (int i = 0; i < allNames.length; i++) {
+            CITYNAMES[i] = shuffleNames.get(i);
+        }
+    }
+    
     
     public class City {
         
@@ -30,17 +37,10 @@ public class Map {
         public boolean isValidSecondaryCity;
         public int cityID;
         
-        void randomizeNames() {
-            Collections.shuffle(shuffleNames);
-            for (int i = 0; i < allNames.length; i++) {
-                CITYNAMES[i] = shuffleNames.get(i);
-            }
-        }
-        
         public City(int cityNum) {
-            randomizeNames();
             cityID = cityNum;
             cityName = CITYNAMES[cityNum];
+            System.out.println(cityNum + " cityName: " + cityName);
             if (cityNum < PRIMARYCITIES) {
                 //city instantiation for primary cities
                 if (cityNum == 0) {
@@ -130,6 +130,9 @@ public class Map {
     }
     
     public Map() {
+        
+        shuffleNames = new ArrayList<>(Arrays.asList(allNames));
+        randomizeNames();
         
         for (int i = 0; i < TOTALCITIES; i++) {
             cities[i] = new City(i);
