@@ -7,13 +7,15 @@ public class Clock {
     LocalDateTime STARTDATE = LocalDateTime.of(2026, Month.MARCH, 11, 1, 30);
     LocalDateTime currentDate = STARTDATE;
     LocalDateTime endDate;
+    RandomEvents rndEventsReference;
+    Player playerReference;
     
     
     // constructor paramter = the maximum number of days to take the journey
-    Clock(int days){
+    Clock(int days, Player player, RandomEvents rndEvents){
         endDate =  STARTDATE.plus(days, ChronoUnit.DAYS);
-        
-        
+        rndEventsReference = rndEvents;
+        playerReference = player;
     }
     
     public String getDate(){
@@ -29,6 +31,7 @@ public class Clock {
         currentDate = currentDate.plus(minutes, ChronoUnit.MINUTES);
         
         //call methods for random events HERE inside of passTime.
+        rndEventsReference.DoEvent(playerReference, this);
         
         if (currentDate.isAfter(endDate.minus(1, ChronoUnit.DAYS))) {
             //implement game loss method (likely in main game loop or player class)

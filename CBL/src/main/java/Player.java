@@ -122,8 +122,8 @@ public class Player {
         renderReference.setMoneyLabel("Money: " + money);
     }
 
-    public void FameChange() {
-        fame += (int) (Math.random() * 5);
+    public void FameChange(int change) {
+        this.fame += change;
     }
 
     public void CurseStatusChange(int change) {

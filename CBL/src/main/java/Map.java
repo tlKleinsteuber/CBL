@@ -9,7 +9,7 @@ import java.util.*;
 
 public class Map {
     
-    public String[] allNames = {"Atlantis", "Dallas", "Not-Paris", "Tokyo", "Elektrėnai", "Mumbai", "Takai", "North America", "Aberdeen", "Abilene", "Akron", "Albany", "Albuquerque", "Alexandria", "Allentown", "Amarillo", "Anaheim", "Anchorage", "Ann Arbor", "Antioch", "Apple Valley", "Appleton", "Arlington", "Arvada", "Asheville", "Athens", "Atlanta", "Atlantic City", "Augusta", "Aurora", "Austin", "Bakersfield", "Baltimore", "Barnstable", "Baton Rouge", "Beaumont", "Bel Air", "Bellevue", "Berkeley", "Bethlehem", "Billings", "Birmingham", "Bloomington"};
+    public String[] allNames = {"Atlantis", "Dallas", "Not-Paris", "Tokyo", "Elektrėnai", "Mumbai", "Trakai", "North America", "Aberdeen", "Abilene", "Akron", "Albany", "Albuquerque", "Alexandria", "Allentown", "Amarillo", "Anaheim", "Anchorage", "Ann Arbor", "Antioch", "Apple Valley", "Appleton", "Arlington", "Arvada", "Asheville", "Athens", "Atlanta", "Atlantic City", "Augusta", "Aurora", "Austin", "Bakersfield", "Baltimore", "Barnstable", "Baton Rouge", "Beaumont", "Bel Air", "Bellevue", "Berkeley", "Bethlehem", "Billings", "Birmingham", "Bloomington"};
     List<String> shuffleNames;
     String[] CITYNAMES = new String[allNames.length];
     public int PATHCHANCECONSTANT = 150;
