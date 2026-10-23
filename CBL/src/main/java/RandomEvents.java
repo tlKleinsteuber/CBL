@@ -2,6 +2,7 @@ import java.util.*;
 
 public class RandomEvents {
     Renderer renderReference;
+    
     public RandomEvents(Renderer r) {
         renderReference = r;
     }
@@ -32,9 +33,7 @@ public class RandomEvents {
         }
     }
     
-    String[] timeAnomalies = {"Forward into the past!", 
-                            "You passed a black hole's event horizon.", 
-                            "You accidently used a time machine."};
+    String[] timeAnomalies = {"Forward into the past!", "You passed a black hole's event horizon.", "You accidently used a time machine."};
     
     void TimeChange(Clock clock) {
         int change = (int) ((Math.random() * 100) - 50);
@@ -49,7 +48,7 @@ public class RandomEvents {
                             "Inga Karkhuul Haw'kohd Dis'nahm Bi'ahni Lawga Ormo Pohmpus Da'nit Ar'edi Iz Khura'in III", 
                             "Yourself", 
                             "The letter 'A'",
-                            "Paul Atishon" , 
+                            "Paul Atishon", 
                             "Adult Jazz", 
                             "Theodore John Kaczynski", 
                             "Your maker", 
@@ -73,7 +72,7 @@ public class RandomEvents {
     void DoEvent(Player playerReference, Clock clock) {
         int rollEvent = (int) ((Math.random() * 100));
         if (rollEvent < 50) {
-            
+            //nothing
         } else if (rollEvent < 65) {
             AteFood(playerReference);
         } else if (rollEvent < 70) {

@@ -13,7 +13,7 @@ public class Items {
     
     public Items generateRandomItem() {
         int a = (int) (Math.random() * 5);
-        switch(a) {
+        switch (a) {
             case 0:
                 return new Food();
             case 1:

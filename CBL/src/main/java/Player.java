@@ -45,15 +45,15 @@ public class Player {
             }
         }
         return cityReturn;
-}
+    }
     
-    public void tryMoveTo(Map.City a){
+    public void tryMoveTo(Map.City a) {
         int distance = worldReference.pathMatrix[a.cityID][location.cityID].distance;
         int quality = worldReference.pathMatrix[a.cityID][location.cityID].quality;
         int timeToMove = distance + 5 - (quality / 51);
         clockReference.passTime(timeToMove);
         MovementStatChanges(timeToMove);
-        if(WellbeingChange() && a.cityName.equals("Eindhoven")) {
+        if (WellbeingChange() && a.cityName.equals("Eindhoven")) {
             renderReference.win();
         }
         renderReference.setWellbeingBar();
@@ -107,7 +107,7 @@ public class Player {
     }
 
     public boolean WellbeingChange() {
-        overallWellbeing = ((((this.maxHunger - this.hunger) + (this.maxThirst - this.thirst) + (this.maxExhaustion - this.exhaustion)) * 1.0)/((this.maxHunger + this.maxThirst + this.maxExhaustion) * 1.0)) * 100;
+        overallWellbeing = ((((this.maxHunger - this.hunger) + (this.maxThirst - this.thirst) + (this.maxExhaustion - this.exhaustion)) * 1.0) / ((this.maxHunger + this.maxThirst + this.maxExhaustion) * 1.0)) * 100;
             //alternate wellbeing calculation.
         //overallWellbeing = 100 - ((hunger / (maxHunger + 0.0)) + (thirst / (maxThirst + 0.0)) + (exhaustion / (maxExhaustion + 0.0))) * 100;
        

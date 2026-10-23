@@ -9,7 +9,7 @@ public class Container {
     ArrayList<Items> items;
     
     
-    public Container(int capacity, String name){
+    public Container(int capacity, String name) {
         itemCount = 0;
         
         maxCapacity = capacity;
@@ -18,7 +18,7 @@ public class Container {
     }
     
     void addItem(Items item) {
-        if(currentEncumbrance + item.encumbrance <= maxCapacity) {
+        if (currentEncumbrance + item.encumbrance <= maxCapacity) {
             items.add(item);
             currentEncumbrance += item.encumbrance;
             itemCount++;
@@ -26,7 +26,7 @@ public class Container {
     }
     
     void removeItem(Items item) {
-        if(currentEncumbrance > 0) {
+        if (currentEncumbrance > 0) {
             items.remove(item);
             currentEncumbrance -= item.encumbrance;
             itemCount--;
@@ -38,8 +38,8 @@ public class Container {
     }
     
     void setSize() {
-            currentEncumbrance = items.size();
-        }
+        currentEncumbrance = items.size();
+    }
         
     int returnSize() {
         return currentEncumbrance;
@@ -50,7 +50,7 @@ public class Container {
     }
     
     public Items getItemByUniqueID(int id) {
-        for(int i = 0; i < items.size(); i++) {
+        for (int i = 0; i < items.size(); i++) {
             if (items.get(i).identifierID == id) {
                 return items.get(i);
             }

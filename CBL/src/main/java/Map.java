@@ -71,12 +71,12 @@ public class Map {
                     coords = new Point(350, 350);
                 } else {
                     //(FORMULA) Formula for coordinates of Primary non-start/end cities:
-                    coords = new Point((int)(Math.random()* 20 - 10) + 40 * (cityNum), (int)(Math.random()*20 - 10) + 40 * (cityNum));
+                    coords = new Point((int)(Math.random() * 20 - 10) + 40 * (cityNum), (int)(Math.random() * 20 - 10) + 40 * (cityNum));
                 }
                 for (int i = 0; i < cityNum; i++) {
                     //instantiates a new edge between all previously instantiated cities & this one. Sets the distance too.
                     pathMatrix[i][cityNum] = new Edge(cities[i], this);
-                    pathMatrix[i][cityNum].distance = (int)Math.sqrt(Math.pow(Math.abs(coords.x - cities[i].coords.x), 2) + Math.pow(Math.abs(coords.y - cities[i].coords.y), 2));
+                    pathMatrix[i][cityNum].distance = (int) Math.sqrt(Math.pow(Math.abs(coords.x - cities[i].coords.x), 2) + Math.pow(Math.abs(coords.y - cities[i].coords.y), 2));
                     pathMatrix[cityNum][i] = pathMatrix[i][cityNum];
                 }
                 
@@ -90,7 +90,7 @@ public class Map {
                     }
                     
                     isValidSecondaryCity = true;
-                    coords = new Point(coords = new Point((int)(Math.random() * 460),(int)(Math.random()* 460)));
+                    coords = new Point(coords = new Point((int) (Math.random() * 460),(int) (Math.random() * 460)));
                     
                     for (int i = 0; i < cityNum; i++) {
                         pathMatrix[i][cityNum] = new Edge(cities[i], this);
@@ -283,7 +283,7 @@ public class Map {
                                 }
                             }
                              */
-                        }
+            }
                     
 
             void PrintStock() {
@@ -330,7 +330,7 @@ public class Map {
         
         public Edge(City a, City b) {
             isPath = false;
-            distance = (int)Math.sqrt(Math.pow(Math.abs(a.coords.x - b.coords.x), 2) + Math.pow(Math.abs(a.coords.y - b.coords.y), 2));
+            distance = (int) Math.sqrt(Math.pow(Math.abs(a.coords.x - b.coords.x), 2) + Math.pow(Math.abs(a.coords.y - b.coords.y), 2));
             //Primary - primary path generation
             if (a.cityID < PRIMARYCITIES && b.cityID < PRIMARYCITIES) {
                 if (a.cityID == b.cityID + 1 || a.cityID == b.cityID - 1) {
@@ -351,7 +351,7 @@ public class Map {
   //[debug          //System.out.print("[X] PATH INSTANTIATION FAILED! retrying...");
                 }
             }
-            if (isPath){
+            if (isPath) {
                 //(FORMULA) formula for quality:                                *** NOTE TO SELF:           a good way to possibly provide balancing is to 
                                                                                                 //             have edges further from the primary line tend to 
                                                                                                 //              generate higher qualities, (or just primary
@@ -360,7 +360,7 @@ public class Map {
                                                                                                          //         the meta too often
                 
                     
-                quality = (int)(Math.random()*256);
+                quality = (int) (Math.random() * 256);
   //[debug]     //System.out.println("[O] Path instantiatied between " + a.cityName + " ( " + a.cityID + ") and " + b.cityName + " (" + b.cityID + ")."
                 //        + "\n   Path quality: " + quality + ". Path diistance: " + distance);
             }

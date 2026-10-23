@@ -13,7 +13,7 @@ public class Clock {
     
     
     // constructor paramter = the maximum number of days to take the journey
-    Clock(int days, Player player, RandomEvents rndEvents, Renderer r){
+    Clock(int days, Player player, RandomEvents rndEvents, Renderer r) {
         renderReference = r;
         endDate =  STARTDATE.plus(days, ChronoUnit.DAYS);
         rndEventsReference = rndEvents;
@@ -22,9 +22,10 @@ public class Clock {
         renderReference.addToLog("You have mysteriously woken up fairly far away! you must return to eindhoven by that date, or you fail!");
     }
     
-    public String getDate(){
+    public String getDate() {
         return "" + currentDate.getYear() + "-" + currentDate.getMonthValue() + "-" + currentDate.getDayOfMonth();
     }
+    
     public String getTime() {
         return "" + currentDate.getHour() + ":" + currentDate.getMinute();
     }
@@ -35,8 +36,8 @@ public class Clock {
         currentDate = currentDate.plus(minutes, ChronoUnit.MINUTES);
         
         //call methods for random events HERE inside of passTime.
-        if (minutes > 0 ) {
-        rndEventsReference.DoEvent(playerReference, this);
+        if (minutes > 0) {
+            rndEventsReference.DoEvent(playerReference, this);
         }
         
         if (currentDate.isAfter(endDate.minus(1, ChronoUnit.DAYS))) {
