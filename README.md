@@ -4,11 +4,25 @@ Repository for CBL project of Tom &amp; Domantas
 This game is similar to & inspired by: the Oregon Trial, FTL, Dwarf Fortress, & Project Zomboid;
 (random event system)	(map)	(complex structures and interactibility)	(inventory system);
 
-
 The premise of this game is to journey from point A to point B as quickly as possible while maintaining certain vital stats.
 
-# Key mechanics:
+# Building and running
+```
+# Building
+## clone the repository and navigate to the project diectory
+git clone https://github.com/tlKleinsteuber/CBL.git
+cd CBL\CBL\src\main\java\CBL.java
 
+## Make sure to have java installed on your device
+```
+
+```
+# Running
+To run the program from terminal, enter the command:
+java CBL.java
+```
+
+# Key mechanics:
 
 Extensive inheritance for class / object system:
   There is an extensive inheritance tree for objects in this game, thus items have many attributes & interactions become more dynamic. For example: a specific instance of a shopkeeper extends shopkeeper, human, animal.
