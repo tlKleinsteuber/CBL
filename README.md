@@ -8,11 +8,11 @@ The premise of this game is to journey from point A to point B as quickly as pos
 # Building and running
 ```
 # Building
-## clone the repository and navigate to the project diectory
-git clone https://github.com/tlKleinsteuber/CBL.git
-cd CBL\CBL\src\main\java\CBL.java
-
 ## Make sure to have java installed on your device
+## If downloading from GitHub clone the repository and navigate to the project diectory
+git clone https://github.com/tlKleinsteuber/CBL.git
+## Use terminal to navigate to the source file
+cd CBL\CBL\src\main\java
 ```
 
 ```
