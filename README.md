@@ -1,8 +1,7 @@
 # CBL
 Repository for CBL project of Tom &amp; Domantas
 
-This game is similar to & inspired by: the Oregon Trial, FTL, Dwarf Fortress, & Project Zomboid;
-(random event system)	(map)	(complex structures and interactibility)	(inventory system);
+This game is similar to & inspired by: the Oregon Trial (random event system), FTL (map), Dwarf Fortress (complex structures and interactibility), & Project Zomboid (inventory system);
 
 The premise of this game is to journey from point A to point B as quickly as possible while maintaining certain vital stats.
 
@@ -34,7 +33,7 @@ java CBL.java
   The game is turn-based, but also functions on a simulated time system. When moving between cities (nodes) or resting, a certain amount of time passes. During this simulated time, stats are effected. Thirst, hunger and exhaustion increase in relation to in-game time and other atributes.
   
 ## Time limit:
-  At the start of the game you have set amount of time to make to the end. Through the time system you lose time, and must make it to the end before time runs out to win. The time limit is X.
+  At the start of the game you have set amount of time to make to the end. Through the time system you lose time, and must make it to the end before time runs out to win. The time limit is 7 days.
 
 ## Inventory & items:
   Every object has an encumbrance (in this case - size) & weight. The player character has an inventory, which allows them to carry any set of items with a sum less than their maximum encumbrance. The maximum space of the inventory cannot be exceeded. 
@@ -55,7 +54,7 @@ java CBL.java
 
 ## Stats:
  The player has 3 survival stats: hunger (increases with time spent), thirst (has a lower cap, but also decreases less with time spent) and exhaustion (increases even less with time spent travelling, but is affected by the carry weight of all items in the inventory). If any of these stats exceed their cap, the game is over!
- There is also the fame stats, gotten from a random event, it does absolutely nothing (inspired by the wisdom stat in Final Fantasy 1)
+ There is also the fame stats, gotten from a random event, it does absolutely nothing (inspired by the wisdom stat in Final Fantasy 1).
  The player may acquire money through their travels, which can be exchanged for items and services.
 
 ## Rest:
