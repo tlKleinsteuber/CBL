@@ -1,4 +1,5 @@
 Map.class
+Renderer$itemRenderInstance$1.class
 Renderer$TravelOption$1.class
 Map$City$Temple.class
 Items.class
@@ -8,7 +9,10 @@ Renderer$TravelOption.class
 Items$Teleporter.class
 Renderer$DisplayGraphics.class
 Clock.class
+Renderer$buildingOption$1.class
 RandomEvents.class
+Renderer$buildingOption.class
+Renderer$ShopItemRenderer.class
 Map$Edge.class
 Items$Watch.class
 CBL.class
@@ -17,9 +21,9 @@ Player.class
 Map$City$Shop.class
 Items$Jawbreaker.class
 Items$Food.class
+Renderer$ShopItemRenderer$1.class
 Renderer.class
 Container.class
 Map$City$Casino.class
 Map$City.class
-Items$Item.class
 Items$Drink.class

@@ -1,12 +1,10 @@
 import java.util.*;
 
 public class RandomEvents {
-    Items itemList;
-    //instantiates random events with an item list for Rock event
-    public RandomEvents(Items itemList) {
-        this.itemList = itemList;
+    Renderer renderReference;
+    public RandomEvents(Renderer r) {
+        renderReference = r;
     }
-    
     /*
     void EventTemplate() {
         System.out.println("Random event");
@@ -17,7 +15,7 @@ public class RandomEvents {
         int change = (int) ((Math.random() * 9) + 1);
         playerReference.HungerChange(change);
         playerReference.WellbeingChange();
-        System.out.println("A schwarma dipped in extra tahini fell into your mouth (with a rouge apple slice and ~3L of water), restore " + change + " hunger.");
+        renderReference.addToLog("A schwarma dipped in extra tahini fell into your mouth (with a rouge apple slice and ~3L of water), restore " + change + " hunger.");
     }
     
     void MoneyFindLose(Player playerReference) {
@@ -26,11 +24,11 @@ public class RandomEvents {
         
         //may do random phrases for money change later
         if (change > 0) {
-            System.out.println("You found some loose change, gain " + change + " money.");
+            renderReference.addToLog("You found some loose change, gain " + change + " money.");
         } else if (change == 0) {
-            System.out.println("Money is +- zero.");
+            renderReference.addToLog("Money is +- zero.");
         } else {
-            System.out.println("A chimpmunk bit off some of your wallet, loose " + change + " money.");
+            renderReference.addToLog("A chimpmunk bit off some of your wallet, loose " + change + " money.");
         }
     }
     
@@ -41,12 +39,11 @@ public class RandomEvents {
     void TimeChange(Clock clock) {
         int change = (int) ((Math.random() * 100) - 50);
         clock.passTime(change);
-        System.out.println(timeAnomalies[(int) (Math.random() * (timeAnomalies.length - 1))]);
-        System.out.println("Your time changed by " + change + " minutes.");
+        renderReference.addToLog(timeAnomalies[(int) (Math.random() * (timeAnomalies.length - 1))]);
+        renderReference.addToLog("Your time dilated by " + change + " minutes.");
     }
     
-    String[] celebrities = {"Human Person", 
-                            "Ted Kaczynski", 
+    String[] celebrities = {"Human Person",
                             "Guy Famous", 
                             "The 'Paper'", 
                             "Inga Karkhuul Haw'kohd Dis'nahm Bi'ahni Lawga Ormo Pohmpus Da'nit Ar'edi Iz Khura'in III", 
@@ -58,39 +55,25 @@ public class RandomEvents {
                             "Your maker", 
                             "Me", 
                             "Fredderick Fazbear", 
+                            "Jaco Pastorius",
                             "Waga"};
     
     void MetCelebrity(Player playerReference) {
         int change = (int) (int) (Math.random() * 5);
         playerReference.FameChange(change);
         String celebrity = celebrities[(int) (Math.random() * (celebrities.length - 1))];
-        System.out.println("You met " + celebrity + ", gain " + change + " fame.");
+        renderReference.addToLog("You met " + celebrity + ", gain " + change + " fame.");
     }
     
     void Curse(Player playerReference) {
         playerReference.CurseStatusChange(1);
-        System.out.println("You have been cursed! All stats increase 2x while travelling.");
-    }
-    
-    void Rocks(Player playerReference, Items itemList) {
-        Iterator<Items.Item> iterator = itemList.items.iterator();
-        Items.Item rock;
-        int numOfRock = playerReference.inventory.maxCapacity - playerReference.inventory.currentEncumbrance;
-        while (iterator.hasNext()) {
-            rock = iterator.next();
-            if(rock.name.equals("Rock")) {
-                for (int j = 0; j < numOfRock; j++) {
-                    playerReference.inventory.addItem(rock);
-                }
-            }
-        }
-        System.out.println("ROCKS");
+        renderReference.addToLog("You have been cursed! All stats increase 2x while travelling.");
     }
     
     void DoEvent(Player playerReference, Clock clock) {
         int rollEvent = (int) ((Math.random() * 100));
         if (rollEvent < 50) {
-            System.out.println("Nothing ever happens.");
+            
         } else if (rollEvent < 65) {
             AteFood(playerReference);
         } else if (rollEvent < 70) {
@@ -101,8 +84,6 @@ public class RandomEvents {
             MetCelebrity(playerReference);
         } else if (rollEvent < 85) {
             Curse(playerReference);
-        } else {
-            Rocks(playerReference, itemList);
-        }
+        } 
     }
 }

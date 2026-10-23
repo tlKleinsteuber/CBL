@@ -53,8 +53,13 @@ public class Player {
         int timeToMove = distance + 5 - (quality / 51);
         clockReference.passTime(timeToMove);
         MovementStatChanges(timeToMove);
-        WellbeingChange();
+        if(WellbeingChange() && a.cityName.equals("Eindhoven")) {
+            renderReference.win();
+        }
         renderReference.setWellbeingBar();
+        renderReference.renderBuildings(location.buildings);
+        
+        
         
         if (worldReference.pathMatrix[a.cityID][location.cityID].isPath) {
             location = a;
@@ -101,7 +106,7 @@ public class Player {
         }
     }
 
-    public void WellbeingChange() {
+    public boolean WellbeingChange() {
         overallWellbeing = ((((this.maxHunger - this.hunger) + (this.maxThirst - this.thirst) + (this.maxExhaustion - this.exhaustion)) * 1.0)/((this.maxHunger + this.maxThirst + this.maxExhaustion) * 1.0)) * 100;
             //alternate wellbeing calculation.
         //overallWellbeing = 100 - ((hunger / (maxHunger + 0.0)) + (thirst / (maxThirst + 0.0)) + (exhaustion / (maxExhaustion + 0.0))) * 100;
@@ -112,6 +117,11 @@ public class Player {
         System.out.println("Exhaustion: " + this.exhaustion + "/" + this.maxExhaustion);
         System.out.println("Overall wellbeing: " + String.format("%.2f", (this.overallWellbeing * 100)) + "%");
         renderReference.revalidate();
+        if (hunger > maxHunger || thirst > maxThirst || exhaustion > maxExhaustion) {
+            renderReference.loseGame("You lose! you neglected your health & were hospitalized! unfortunately, you cannot resit your finals... You have failed!");
+            return false;
+        }
+        return true;
     }
 
     public void MoneyChange(int change) {

@@ -1,4 +1,6 @@
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collections;
 import java.util.*;
 
@@ -23,13 +25,19 @@ public class Map {
     int totalEdges = 0;
     Items items;
     Player playerReference;
+    Renderer renderReference;
+    boolean leavingBuilding;
     
    
-    void randomizeNames() {
+    public void randomizeNames() {
         Collections.shuffle(shuffleNames);
         for (int i = 0; i < allNames.length; i++) {
             CITYNAMES[i] = shuffleNames.get(i);
         }
+    }
+    
+    public void passObjects(Renderer r) {
+        renderReference = r;
     }
     
     
@@ -56,7 +64,7 @@ public class Map {
             if (cityNum < PRIMARYCITIES) {
                 //city instantiation for primary cities
                 if (cityNum == 0) {
-                    cityName = "start";
+                    cityName = "far away city";
                     coords = new Point(0, 0);
                 } else if (cityNum == PRIMARYCITIES - 1) {
                     cityName = "Eindhoven";
@@ -146,6 +154,8 @@ public class Map {
 
             String name;
             int id;
+            int ordererdID;
+            
 
             void Enter(Player player) {
                 /*
@@ -177,40 +187,30 @@ public class Map {
 
             @Override
             void Enter(Player player) {
-                Scanner input = new Scanner(System.in);
-
-                System.out.println("Gambling is FUN! How much you wanna bet?");
-                String command = input.next();
-                while (!command.equals("leave")) {
-                    int moola = Integer.parseInt(command);
-                    if (moola <= player.money) {
-                        Bet(player, moola);
-                    } else {
-                        System.out.println("U be poor!");
-                    }
-
-                    System.out.println("Wanna bet again?");
-                    command = input.next();
-                }
+                renderReference.addToLog("Gambling is FUN! How much you wanna bet?");
+                renderReference.swapBuildingOptions("casino");
             }
 
             @Override
             void Exit() {
-                System.out.println("May the Chancemaker be with you...");
+                renderReference.addToLog("May the Chancemaker be with you...");
+                renderReference.renderTravelOptions(playerReference.getAdjacentCities(playerReference.location), playerReference.location);
+                renderReference.swapBuildingOptions("noBuilding");
+                
             }
 
             void Bet(Player player, int moola) {
-                player.MoneyChange(-1 * moola);
+                playerReference.MoneyChange(-1 * moola);
                 int win = moola * ((int) (Math.random() * 100) - 50);
-                if (player.money + win < 0) {
-                    System.out.println("Congrats! You're in debt!");
-                    player.money += win;
+                if (playerReference.money + win < 0) {
+                    renderReference.addToLog("Congrats! You're in debt!");
+                    playerReference.money += win;
                 } else if (win < 0) {
-                    System.out.println("You lost " + -1 * win + " money");
-                    player.money += win;
+                    renderReference.addToLog("You lost " + -1 * win + " money");
+                    playerReference.money += win;
                 } else {
-                    System.out.println("You won " + win + " money");
-                    player.money += win;
+                    renderReference.addToLog("You won " + win + " money");
+                    playerReference.money += win;
                 }
             }
         }
@@ -218,67 +218,29 @@ public class Map {
         public class Shop extends Building {
 
             //writes all items into array for randomization
-            ArrayList<Items.Item> initialPossibleItems;
-            Items.Item[] possibleItems;
             Container stock;
 
-            void ArrayofPossibilities(Items items) {
-                initialPossibleItems = new ArrayList(items.items);
-                possibleItems = new Items.Item[initialPossibleItems.size()];
-                for (int i = 0; i < initialPossibleItems.size(); i++) {
-                    possibleItems[i] = initialPossibleItems.get(i);
-                }
-            }
-
             Shop(Items items) {
+                stock = new Container(1000, "shop");
+                
+                stock.itemCount = (int) (Math.random() * 4 + 2);
                 name = "Shop";
                 id = 0;
-                stock = new Container(1000, "shop");
-                ArrayofPossibilities(items);
                 for (int i = 0; i < stock.itemCount; i++) {
-                    stock.items.add(possibleItems[(int) (Math.random() * items.items.size() - 1)]);
+                    stock.items.add(items.generateRandomItem());
+                    System.out.println(stock.items.get(i).name);
                 }
             }
 
             @Override
             void Enter(Player player) {
-                Scanner input = new Scanner(System.in);
                 //shows the wares
                 System.out.println("The shop has " + stock.itemCount + " item(s) for sale:");
                 PrintStock();
-                String command = input.next();
-                String affectedItemName;
-                while (!command.equals("leave")) {
-                    switch (command) {
-                        case "buy" -> {
-                            affectedItemName = input.next();
-                            Iterator<Items.Item> iterator = stock.items.iterator();
-                            Items.Item i;
-                            while (iterator.hasNext()) {
-                                i = iterator.next();
-                                if (i.name.equals(affectedItemName)) {
-                                    if (player.money >= i.price) {
-                                        if (player.inventory.returnSize() + i.encumbrance <= player.inventory.maxCapacity) {
-                                            player.inventory.addItem(i);
-                                            player.MoneyChange(-1 * i.price);
-                                            iterator.remove();
-                                            stock.itemCount--;
-                                            PrintStock();
-                                            break;
-                                        } else {
-                                            System.out.println("Not enough space!");
-                                            break;
-                                        }
-                                    } else {
-                                        System.out.println("Not enough money!");
-                                        break;
-                                    }
-                                }
-                                /*else {
-                                    System.out.println("Item is not in stock!");
-                                }*/
-                            }
-                        }
+                renderReference.swapBuildingOptions("shop");
+                
+                renderReference.renderShopItems(stock.items);
+                        /*
                         case "sell" -> {
                             affectedItemName = input.next();
                             boolean isInInventory = false;
@@ -322,14 +284,7 @@ public class Map {
                             }
                              */
                         }
-                        default -> {
-                            System.out.println("?");
-                        }
-                    }
-
-                    command = input.next();
-                }
-            }
+                    
 
             void PrintStock() {
                 for (int i = 0; i < stock.itemCount; i++) {
@@ -340,6 +295,8 @@ public class Map {
             @Override
             void Exit() {
                 System.out.println("Come back again!");
+                renderReference.renderTravelOptions(playerReference.getAdjacentCities(playerReference.location), playerReference.location);
+                renderReference.swapBuildingOptions("noBuilding");
             }
         }
 
@@ -352,36 +309,16 @@ public class Map {
 
             @Override
             void Enter(Player player) {
-                Scanner input = new Scanner(System.in);
-
-                System.out.println("Come, pray! For 10 bob be cleansed your soul!");
-                System.out.println("Do you accept?");
-                String command = input.next();
-                while (!command.equals("leave")) {
-                    switch (command) {
-                        case "Yes" -> {
-                            if (player.money >= 10) {
-                                player.MoneyChange(-1 * 10);
-                                player.CurseStatusChange(0);
-                                System.out.println("YAY!");
-                            } else {
-                                System.out.println("According to the prosperity gospel, you cannot be blessed!");
-                            }
-                        }
-                        case "No" -> {
-                            System.out.println("Aww...");
-                        }
-                        default -> {
-                            System.out.println("?");
-                        }
-                    }
-                    command = input.next();
-                }
+                renderReference.swapBuildingOptions("temple");
+                renderReference.addToLog("Come, pray! For 10$ be cleansed your soul!");
+                renderReference.addToLog("Do you accept?");
             }
 
             @Override
             void Exit() {
-                System.out.println("The Grandmatriarch will be pleased.");
+                renderReference.addToLog("The Grandmatriarch will be pleased.");
+                renderReference.renderTravelOptions(playerReference.getAdjacentCities(playerReference.location), playerReference.location);
+                renderReference.swapBuildingOptions("noBuilding");
             }
         }
     }

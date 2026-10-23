@@ -9,13 +9,17 @@ public class Clock {
     LocalDateTime endDate;
     RandomEvents rndEventsReference;
     Player playerReference;
+    Renderer renderReference;
     
     
     // constructor paramter = the maximum number of days to take the journey
-    Clock(int days, Player player, RandomEvents rndEvents){
+    Clock(int days, Player player, RandomEvents rndEvents, Renderer r){
+        renderReference = r;
         endDate =  STARTDATE.plus(days, ChronoUnit.DAYS);
         rndEventsReference = rndEvents;
         playerReference = player;
+        renderReference.addToLog("The date / time is " + getDate() + " | " + getTime() + ". Your finals are on " + + endDate.getYear() + "-" + endDate.getMonthValue() + "-" + endDate.getDayOfMonth() + " | " + endDate.getHour() + ":" + endDate.getMinute());
+        renderReference.addToLog("You have mysteriously woken up fairly far away! you must return to eindhoven by that date, or you fail!");
     }
     
     public String getDate(){
@@ -31,14 +35,12 @@ public class Clock {
         currentDate = currentDate.plus(minutes, ChronoUnit.MINUTES);
         
         //call methods for random events HERE inside of passTime.
+        if (minutes > 0 ) {
         rndEventsReference.DoEvent(playerReference, this);
+        }
         
         if (currentDate.isAfter(endDate.minus(1, ChronoUnit.DAYS))) {
-            //implement game loss method (likely in main game loop or player class)
-            //also implement condition to check for certain time on finalDay
-            
-            //Split the passtime call into 2 calls, one consisting of the valid passed time pre-loss. This permits valid calculation of random events that may influence
-            // time. the 2nd call just makes u lose if the added time is still 
+            renderReference.loseGame("You lose! you could not make it to Eindhoven in time, and you failed your finals by absence!");
             
             
         }
