@@ -1,5 +1,6 @@
 # HIGH PRIORITY
 
+Chosen advanced topics:
 [X] Git version control (self evident)
 [X] Complex data structures (map)
 
@@ -47,38 +48,28 @@
 	[X] visuals
 		- map is represented visually
 
-[] extended statistics
-	[] updated hunger
-		- onsets effects at varying levels instead of nothing / hospitalized (lol)
-	[] thirst
+[X] extended statistics
+	[X] updated hunger
+		- onsets effects at varying levels instead of nothing / hospitalized
+	[X] thirst
 		-functions similarly to hunger, but has impacts faster
 		-If the player is holding a bottle of water, thirst is automatically maintained by decreasing water in container instead of increasing thirst
-	[] exhaustion
+	[X] exhaustion
 		- is gained after too much time without sleep. slows all actions (thus also increasing random encounter per action)
-	[] physical strain
-		- is gained after too much physical activity without rest
-	[] joy
-		- is lowered by other negative traits (hunger, exhaustion, etc). more of an overall indicator of wellbeing than anything else
+	[X] overal wellbeing
+		- is lowered by other negative traits (hunger, exhaustion, etc)
 
-[] extended random events
+[X] extended random events
 	- more events, they contain names and descriptions
 
-[] extended shop
+[X] extended shop
 	- allows for purchase of items to help manage stats
 
-[] extended player character instantiation
-	[] player is instantiated with expanded stats
+[X] extended player character instantiation
+	[X] player is instantiated with expanded stats
 
 # Low priority
 
-[] graphics
-	- game has simple graphics
-
-[] extended statistics
-	[] fame
-		- is gained from random events, is useless (just like wisdom in ff1)
-	[] cringe
-		- gained by specific circumstances, causes "died by cringe" event if >0
-
-[] saving
-	- the game can be saved/autosaves, allows closing program without losing progress
+[X] extended statistics
+	[X] fame
+		- is gained from random events, is useless (just like wisdom in Final Fantasy)
