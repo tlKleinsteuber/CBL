@@ -24,23 +24,42 @@ java CBL.java
 
 # Key mechanics:
 
-Extensive inheritance for class / object system:
-  There is an extensive inheritance tree for objects in this game, thus items have many attributes & interactions become more dynamic. For example: a specific instance of a shopkeeper extends shopkeeper, human, animal.
+## Winning:
+ To win the game, the player must reach Eindhoven without dying or running out of time.
 
-Time system:
-  The game is turn-based, but also functions on a simulated time system. Inputted actions take a certain amount of in-game time, as is calculated by various metrics applicable to the action. For example, walking from location 1 to location 2 might take 30 in-game minutes, as is calculated by distance between the two points. During this simulated time, stats are effected. Thirst, hunger, exhaustion, etc increase in relation to in-game time. The more time spent travelling between nodes also increases chance and amount of random events on the way.
+## Extensive inheritance for class / object system:
+  There is an extensive inheritance tree for objects in this game, thus items have many attributes & interactions become more dynamic.
+
+## Time system:
+  The game is turn-based, but also functions on a simulated time system. When moving between cities (nodes) or resting, a certain amount of time passes. During this simulated time, stats are effected. Thirst, hunger and exhaustion increase in relation to in-game time and other atributes.
   
-Time limit:
-  At the start of the game you have set amount of time to make to the end. Through the time system you lose time, and must make it to the end before time runs out to win. The time limit is set according to the number of connections present on the main path and their total time and then put through a calculation to get the final time, which is usually enough to both make it and epxlore at least one offshoot.
+## Time limit:
+  At the start of the game you have set amount of time to make to the end. Through the time system you lose time, and must make it to the end before time runs out to win. The time limit is X.
 
-Inventory & encumbrance system:
-  Every object has an encumbrance (generally, it's difficulty to carry) as is calculated by parameters like it's size & weight. The player character inventory is dependant on their strength & clothing (bags will increase it, for instance). A player can carry any set of items with sum less than their maximum encumbrance without reprecution. After the maximum is exceeded, they can continue to pick things up, though exhaustion will be gained at an elevated rate proportional to the excess encumbrance to some exponent.
+## Inventory & items:
+  Every object has an encumbrance (in this case - size) & weight. The player character has an inventory, which allows them to carry any set of items with a sum less than their maximum encumbrance. The maximum space of the inventory cannot be exceeded. 
+  There are multiple items, each one allows to manage one or a few stats, or one specific item allows to increase the time left. Each item has a buy and sell price (2 lower than buy) and may be bought from shops. Items can be used while in any city and disappear after use.
 
-Map:
- The map is made up of randomly generated interconnected nodes, excluding the start and end nodes, which have predetermined positions. There is always a path from start to end, however, not all nodes are part of that path, a. k. a. offshoots, which usually require going back and forward on the same path, however, they usually give a strategic advantage/buff. Each node represents a city.
+## Map:
+ The map is made up of randomly generated interconnected nodes, excluding the start and end nodes, which have predetermined positions, and a set of 8 guaranteed nodes between them, the 'Main Path'. There is always a path from start to end ('Main Path'), however, not all nodes are part of that path, a. k. a. offshoots, which usually require going back and forward on the same path, however, they usually give a strategic advantage/buff.
+ The connections between each node have 2 attributes: distance and quality, both affecting the time it takes to travel between each node. The connections of the 'Main Path' have a lower quality cap compared to connections with and between offshoots. Each node represents a city.
 
-Cities:
- Cities are randomly picked from the pool of predetermined "made-up" cities. Each city has it own randomly generated locations (shops, etc.), which can be moved between each other at no cost.
+## Cities:
+ Cities are randomly picked from the pool of predetermined "made-up" European cities. Each city has it own randomly generated buildings (shops, etc.), which can be moved between each other at no cost.
 
-Random events:
- When travelling between nodes there is a chance for a random event (or multiple) to occur. Random events take from a pool of events, the same event may occur multiple times. Each event has a title, description and gameplay affects, such as changing stats and/or items, may even affect time.
+## Buildings:
+ Each building serves a distinct function: shops allow to purchase and sell items, casinos allow to bet money and go into debt, and temples allow to be cured     of curses.
+
+## Random events:
+ When travelling between nodes there is a chance for a random event to occur. Random events take from a pool of events, the same event may occur multiple times. Each event affects the gameplay in some way, such as decreasing hunger, changing the current time, etc. There is an event where the player becomes cursed.
+
+## Stats:
+ The player has 3 survival stats: hunger (increases with time spent), thirst (has a lower cap, but also decreases less with time spent) and exhaustion (increases even less with time spent travelling, but is affected by the carry weight of all items in the inventory). If any of these stats exceed their cap, the game is over!
+ There is also the fame stats, gotten from a random event, it does absolutely nothing (inspired by the wisdom stat in Final Fantasy 1)
+ The player may acquire money through their travels, which can be exchanged for items and services.
+
+## Rest:
+ The player may rest at any time in any city, reducing their exhaustion but increasing hunger & thirst and losing some time.
+ 
+## Curse status:
+ A specific random event will give the player a curse status effect, which doubles all stat increases while travelling. A curse can be gotten rid of in a temple in exchange for money.
